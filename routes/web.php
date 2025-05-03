@@ -19,8 +19,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/user/settings', [UserController::class, 'settings'])->name('user.settings');
 
     // =====================
-// Product & Order Management
-// =====================
+    // Product & Order Management
+    // =====================
     Route::get('/products', [ProductController::class, 'index'])->name('products.index');
     Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
     Route::get('/products/categories', [ProductCategoryController::class, 'index'])->name('product.categories');
@@ -31,26 +31,26 @@ Route::middleware('auth')->group(function () {
     Route::get('/orders/status/{status}', [OrderController::class, 'status'])->name('orders.status');
 
     // =====================
-// Invoice & Payment System
-// =====================
+    // Invoice & Payment System
+    // =====================
     Route::get('/invoices', [InvoiceController::class, 'index'])->name('invoice.index');
     Route::get('/invoices/create', [InvoiceController::class, 'create'])->name('invoice.create');
     Route::get('/payments', [PaymentController::class, 'index'])->name('payments.index');
 
     // =====================
-// Support & Ticket System
-// =====================
+    // Support & Ticket System
+    // =====================
     Route::get('/tickets', [TicketController::class, 'index'])->name('tickets.index');
     Route::get('/tickets/create', [TicketController::class, 'create'])->name('tickets.create');
 
     // =====================
-// Financial Reports & Settings
-// =====================
+    // Financial Reports & Settings
+    // =====================
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
     Route::get('/expenses', [ExpenseController::class, 'index'])->name('expenses.index');
 
     // =====================
-// System Settings (Admin Only)
+    // System Settings (Admin Only)
     Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
     Route::get('/settings/timezone', [SettingController::class, 'timezone'])->name('timezone.settings');
     Route::get('/backup', [BackupController::class, 'index'])->name('backup.index');
