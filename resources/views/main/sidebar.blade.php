@@ -2,7 +2,7 @@
     <div class="nk-nav-scroll">
         <ul class="metismenu" id="menu">
             <!-- Dashboard -->
-            <li><a href="{{ route('index') }}">
+            <li><a href="{{ route('dashboard') }}">
                 <i class="mdi mdi-view-dashboard"></i>
                 <span class="nav-text">Dashboard</span>
             </a></li>

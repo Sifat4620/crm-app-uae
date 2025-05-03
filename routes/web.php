@@ -1,22 +1,17 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Auth\LoginController;
 
-
-// =====================
-// User & Authentication Routes
-// =====================
 Route::get('/', function () {
     return view('Dashboard');
-})->name('index');
+})->name('dashboard');
 
-
-// Login Routes
-
-Route::post('logout', [LoginController::class, 'logout'])->name('logout');
-
-
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
 
 // User Management Routes
 Route::get('/users', [UserController::class, 'index'])->name('users.index');
@@ -59,3 +54,6 @@ Route::get('/expenses', [ExpenseController::class, 'index'])->name('expenses.ind
 Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
 Route::get('/settings/timezone', [SettingController::class, 'timezone'])->name('timezone.settings');
 Route::get('/backup', [BackupController::class, 'index'])->name('backup.index');
+
+
+require __DIR__ . '/auth.php';
