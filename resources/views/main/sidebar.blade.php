@@ -3,9 +3,9 @@
         <ul class="metismenu" id="menu">
             <!-- Dashboard -->
             <li><a href="{{ route('dashboard') }}">
-                <i class="mdi mdi-view-dashboard"></i>
-                <span class="nav-text">Dashboard</span>
-            </a></li>
+                    <i class="mdi mdi-view-dashboard"></i>
+                    <span class="nav-text">Dashboard</span>
+                </a></li>
 
             <!-- Client Management Section -->
             <li class="has-arrow">
@@ -43,6 +43,14 @@
                     {{-- <li><a href="{{ route('invoice.index') }}">Invoices</a></li>
                     <li><a href="{{ route('payments.index') }}">Payments</a></li> --}}
                 </ul>
+            </li>
+
+            <!-- Role & Permission Section -->
+            <li class="has-arrow">
+                <a href="{{ route('roles.index') }}" aria-expanded="false">
+                    <i class="mdi mdi-key"></i>
+                    <span class="nav-text">Role</span>
+                </a>
             </li>
 
             <!-- Support & Ticket System Section -->

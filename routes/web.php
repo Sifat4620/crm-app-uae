@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Roles\RoleController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Products\ProductCategoryController;
 use App\Http\Controllers\Products\ProductController;
@@ -33,11 +34,11 @@ Route::middleware('auth')->group(function () {
 
 
 
-    
+
     // =====================
     // Product Category Management
     // =====================
-      
+
     Route::prefix('products')->name('products.')->group(function () {
         // Routes for product management
         Route::get('/', [ProductController::class, 'index'])->name('index');
@@ -46,7 +47,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/{id}/edit', [ProductController::class, 'edit'])->name('edit');
         Route::put('/{id}', [ProductController::class, 'update'])->name('update');
         Route::delete('/{id}', [ProductController::class, 'destroy'])->name('destroy');
-    
+
         // Routes for product category management
         Route::prefix('categories')->name('categories.')->group(function () {
             Route::get('/', [ProductCategoryController::class, 'index'])->name('index');
@@ -66,19 +67,19 @@ Route::middleware('auth')->group(function () {
     Route::prefix('orders')->name('orders.')->group(function () {
         // Show all orders
         Route::get('/', [OrderController::class, 'index'])->name('index');
-        
+
         // Create a new order (show form)
         Route::get('/create', [OrderController::class, 'create'])->name('create');
-        
+
         // Store a new order (submit form)
         Route::post('/', [OrderController::class, 'store'])->name('store');
-        
+
         // Show a specific order by ID
         Route::get('/{id}', [OrderController::class, 'show'])->name('show');
-        
+
         // Update the status of an order
         Route::get('/status/{status}', [OrderController::class, 'status'])->name('status');
-        
+
         // Track the order
         Route::get('/track/{id}', [OrderController::class, 'trackOrder'])->name('track');
 
@@ -87,10 +88,10 @@ Route::middleware('auth')->group(function () {
 
         // Client-Wise Products
         Route::get('/client/{clientId}/products', [OrderController::class, 'clientProducts'])->name('client-products');
-        
+
         // Product Stock & Order Processing Time
         Route::get('/product/{productId}/check-stock', [OrderController::class, 'checkStock'])->name('check-stock');
-        
+
         // Billing Cycle Options
         Route::get('/billing-options', [OrderController::class, 'billingOptions'])->name('billing-options');
     });
@@ -103,7 +104,7 @@ Route::middleware('auth')->group(function () {
 
 
 
-    
+
 
     // // =====================
     // // Invoice & Payment System
@@ -134,6 +135,10 @@ Route::middleware('auth')->group(function () {
     //     Route::get('/settings/timezone', [SettingController::class, 'timezone'])->name('timezone.settings');
     //     Route::get('/backup', [BackupController::class, 'index'])->name('backup.index');
     // });
+
+    // Roles route
+    Route::resource('roles', RoleController::class);
+
 });
 
 // Authentication Routes
