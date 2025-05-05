@@ -44,8 +44,8 @@
                                         <td>{{ $category->products->count() }}</td>
                                         <td>{{ $category->description ?? 'N/A' }}</td>
                                         <td>
-                                            <a href="{{ route('product.categories.edit', $category->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                                            <form action="{{ route('product.categories.destroy', $category->id) }}" method="POST" class="d-inline">
+                                            <a href="{{ route('products.categories.edit', $category->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                                            <form action="{{ route('products.categories.destroy', $category->id) }}" method="POST" class="d-inline">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-danger btn-sm">Delete</button>

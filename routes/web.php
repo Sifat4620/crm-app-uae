@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Products\ProductCategoryController;
 use App\Http\Controllers\Products\ProductController;
-
+use App\Http\Controllers\Orders\OrderController;
 
 
 
@@ -60,14 +60,50 @@ Route::middleware('auth')->group(function () {
 
 
 
-    // // =====================
-    // // Order Management
-    // // =====================
-    // Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
-    // Route::get('/orders/create', [OrderController::class, 'create'])->name('orders.create');
-    // Route::post('/orders', [OrderController::class, 'store'])->name('orders.store'); 
-    // Route::get('/orders/{id}', [OrderController::class, 'show'])->name('orders.show');
-    // Route::get('/orders/status/{status}', [OrderController::class, 'status'])->name('orders.status');
+    // =====================
+    // Order Management
+    // =====================
+    Route::prefix('orders')->name('orders.')->group(function () {
+        // Show all orders
+        Route::get('/', [OrderController::class, 'index'])->name('index');
+        
+        // Create a new order (show form)
+        Route::get('/create', [OrderController::class, 'create'])->name('create');
+        
+        // Store a new order (submit form)
+        Route::post('/', [OrderController::class, 'store'])->name('store');
+        
+        // Show a specific order by ID
+        Route::get('/{id}', [OrderController::class, 'show'])->name('show');
+        
+        // Update the status of an order
+        Route::get('/status/{status}', [OrderController::class, 'status'])->name('status');
+        
+        // Track the order
+        Route::get('/track/{id}', [OrderController::class, 'trackOrder'])->name('track');
+
+        // Update the status of a specific order
+        Route::put('/{id}/update-status', [OrderController::class, 'updateStatus'])->name('update-status');
+
+        // Client-Wise Products
+        Route::get('/client/{clientId}/products', [OrderController::class, 'clientProducts'])->name('client-products');
+        
+        // Product Stock & Order Processing Time
+        Route::get('/product/{productId}/check-stock', [OrderController::class, 'checkStock'])->name('check-stock');
+        
+        // Billing Cycle Options
+        Route::get('/billing-options', [OrderController::class, 'billingOptions'])->name('billing-options');
+    });
+
+
+
+
+
+
+
+
+
+    
 
     // // =====================
     // // Invoice & Payment System

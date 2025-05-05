@@ -37,26 +37,25 @@ class ProductController extends Controller
     // Store a newly created product in the database
     public function store(Request $request)
     {
-        // Validate the incoming request
         $request->validate([
-            'name' => 'required|string|max:255',
+            'product_name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'price' => 'required|numeric',
             'category_id' => 'required|exists:product_categories,id',
-            'stock' => 'required|integer',
+            'stock_quantity' => 'required|integer',
         ]);
-
-        // Create a new product record
+    
         Product::create([
-            'name' => $request->name,
+            'name' => $request->product_name,
             'description' => $request->description,
             'price' => $request->price,
             'category_id' => $request->category_id,
-            'stock' => $request->stock,
+            'stock_quantity' => $request->stock_quantity, 
         ]);
-
+    
         return redirect()->route('products.index')->with('success', 'Product created successfully.');
     }
+    
 
     // Display the specified product
     public function show($id)

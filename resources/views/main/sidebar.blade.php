@@ -28,8 +28,8 @@
                 <ul aria-expanded="false">
                     <li><a href="{{ route('products.index') }}">Products</a></li>
                     <li><a href="{{ route('products.create') }}">Add Product</a></li>
-                    {{-- <li><a href="{{ route('product.categories.index') }}">Product Categories</a></li>
-                    <li><a href="{{ route('orders.index') }}">Orders</a></li> --}}
+                    <li><a href="{{ route('products.categories.index') }}">Product Categories</a></li>
+                    <li><a href="{{ route('orders.index') }}">Orders</a></li>
                 </ul>
             </li>
 
