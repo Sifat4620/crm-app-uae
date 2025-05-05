@@ -14,8 +14,8 @@
                     <span class="nav-text">Clients</span>
                 </a>
                 <ul aria-expanded="false">
-                    <li><a href="{{ route('users.index') }}">Client List</a></li>
-                    <li><a href="{{ route('user.register') }}">Add Client</a></li>
+                    {{-- <li><a href="{{ route('users.index') }}">Client List</a></li>
+                    <li><a href="{{ route('user.register') }}">Add Client</a></li> --}}
                 </ul>
             </li>
 
@@ -28,7 +28,8 @@
                 <ul aria-expanded="false">
                     <li><a href="{{ route('products.index') }}">Products</a></li>
                     <li><a href="{{ route('products.create') }}">Add Product</a></li>
-                    <li><a href="{{ route('orders.index') }}">Orders</a></li>
+                    {{-- <li><a href="{{ route('product.categories.index') }}">Product Categories</a></li>
+                    <li><a href="{{ route('orders.index') }}">Orders</a></li> --}}
                 </ul>
             </li>
 
@@ -39,8 +40,8 @@
                     <span class="nav-text">Invoices & Payments</span>
                 </a>
                 <ul aria-expanded="false">
-                    <li><a href="{{ route('invoice.index') }}">Invoices</a></li>
-                    <li><a href="{{ route('payments.index') }}">Payments</a></li>
+                    {{-- <li><a href="{{ route('invoice.index') }}">Invoices</a></li>
+                    <li><a href="{{ route('payments.index') }}">Payments</a></li> --}}
                 </ul>
             </li>
 
@@ -51,16 +52,16 @@
                     <span class="nav-text">Support</span>
                 </a>
                 <ul aria-expanded="false">
-                    <li><a href="{{ route('tickets.index') }}">Support Tickets</a></li>
-                    <li><a href="{{ route('tickets.create') }}">Raise Ticket</a></li>
+                    {{-- <li><a href="{{ route('tickets.index') }}">Support Tickets</a></li>
+                    <li><a href="{{ route('tickets.create') }}">Raise Ticket</a></li> --}}
                 </ul>
             </li>
 
             <!-- Financial Reports Section -->
-            <li><a href="{{ route('reports.index') }}">
+            {{-- <li><a href="{{ route('reports.index') }}">
                 <i class="mdi mdi-chart-line"></i>
                 <span class="nav-text">Reports</span>
-            </a></li>
+            </a></li> --}}
 
             {{-- <!-- System Settings Section (Admin) -->
             @role('admin')
