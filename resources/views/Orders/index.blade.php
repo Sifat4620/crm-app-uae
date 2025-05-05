@@ -7,14 +7,11 @@
         <!-- Page Title & Breadcrumb -->
         <div class="row page-titles">
             <div class="col">
-                <h4>Product Categories</h4>
-            </div>
-            <div class="col text-right">
-                <a href="{{ route('products.categories.create') }}" class="btn btn-primary">Add New Category</a>
+                <h4>Orders</h4>
             </div>
         </div>
 
-        <!-- Category Table -->
+        <!-- Orders Table -->
         <div class="row">
             <div class="col-lg-12">
                 @if(session('success'))
@@ -27,38 +24,30 @@
                             <thead class="thead-light">
                                 <tr>
                                     <th>#</th>
-                                    <th>Category Name</th>
-                                    <th>Created At</th>
-                                    <th>Actions</th>
+                                    <th>Product</th>
+                                    <th>Client</th>
+                                    <th>Quantity</th>
+                                    <th>Status</th>
+                                    <th>Ordered At</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse($categories as $index => $category)
+                                @forelse($orders as $index => $order)
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
-                                        <td>{{ $category->name }}</td>
-                                        <td>{{ $category->created_at->format('d M Y') }}</td>
-                                        <td>
-                                            <a href="{{ route('products.categories.edit', $category->id) }}" class="btn btn-sm btn-warning">Edit</a>
-                                            <form action="{{ route('products.categories.destroy', $category->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure?');">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button class="btn btn-sm btn-danger">Delete</button>
-                                            </form>
-                                        </td>
+                                        <td>{{ $order->product->name ?? 'N/A' }}</td>
+                                        <td>{{ $order->client->name ?? 'N/A' }}</td>
+                                        <td>{{ $order->quantity }}</td>
+                                        <td>{{ $order->status }}</td>
+                                        <td>{{ $order->created_at->format('d M Y') }}</td>
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="4" class="text-center">No categories found.</td>
+                                        <td colspan="6" class="text-center">No orders found.</td>
                                     </tr>
                                 @endforelse
                             </tbody>
                         </table>
-
-                        {{-- Pagination --}}
-                        <div class="mt-3">
-                            {{-- {{ $categories->links() }} --}}
-                        </div>
                     </div>
                 </div>
             </div>
