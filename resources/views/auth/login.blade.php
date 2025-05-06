@@ -1,47 +1,109 @@
-<x-guest-layout>
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
+<!DOCTYPE html>
+<html lang="en" class="h-100" id="login-page1">
 
-    <form method="POST" action="{{ route('login') }}">
-        @csrf
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login</title>
+    <!-- Favicon icon -->
+    <link rel="icon" href="{{ asset('assets/images/favicon.ico') }}" type="image/x-icon">
 
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+    <!-- Custom Stylesheet -->
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+    <script src="{{ asset('js/modernizr.3.6.0.min.js') }}"></script>
+</head>
+
+<body class="h-100">
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="loader">
+            <svg class="circular" viewBox="25 25 50 50">
+                <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="3" stroke-miterlimit="10"/>
+            </svg>
         </div>
+    </div>
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
+    <div class="login-bg h-100">
+        <div class="container h-100">
+            <div class="row justify-content-center align-items-center h-100">
+                <div class="col-xl-6 col-lg-8 col-md-10">
+                    <div class="form-input-content">
+                        <div class="card">
+                            <div class="card-body">
+                                <!-- Logo Section -->
+                                <div class="logo text-center mt-4">
+                                    <h4>CRM - Customer Relationship Management System</h4>
+                                </div>
+                                
+                                <!-- Login Form Heading -->
+                                <h4 class="text-center mt-3">Log into Your Account</h4>
 
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
+                                <!-- Form Starts Here -->
+                                <form class="m-t-30 m-b-30" method="POST" action="{{ route('login') }}">
+                                    @csrf
 
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+                                    <!-- Email Address Input -->
+                                    <div class="form-group">
+                                        <label for="email">Email Address</label>
+                                        <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" name="email" placeholder="Email" value="{{ old('email') }}" required autofocus autocomplete="username">
+                                        @error('email')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+
+                                    <!-- Password Input -->
+                                    <div class="form-group">
+                                        <label for="password">Password</label>
+                                        <input type="password" class="form-control @error('password') is-invalid @enderror" id="password" name="password" placeholder="Password" required>
+                                        @error('password')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+
+                                    <!-- Remember Me and Forgot Password -->
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="remember" name="remember">
+                                                <label class="form-check-label" for="remember">Remember me</label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-md-6 text-right">
+                                            @if (Route::has('password.request'))
+                                                <a href="{{ route('password.request') }}" class="text-muted">Forgot Password?</a>
+                                            @endif
+                                        </div>
+                                    </div>
+
+                                    <!-- Submit Button -->
+                                    <div class="text-center m-b-15 m-t-15">
+                                        <button type="submit" class="btn btn-primary btn-block">Sign in</button>
+                                    </div>
+                                </form>
+                                <!-- Form Ends Here -->
+
+                                <!-- Alternative Login Options (Social Media or Others) -->
+                                <div class="text-center">
+                                    <p class="m-t-30">Don't have an account? <a href="{{ route('register') }}">Register Now</a></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+    </div>
 
-        <!-- Remember Me -->
-        <div class="block mt-4">
-            <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember">
-                <span class="ms-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
-            </label>
-        </div>
+    <!-- Common JS -->
+    <script src="{{ asset('assets/plugins/common/common.min.js') }}"></script>
 
-        <div class="flex items-center justify-end mt-4">
-            @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}">
-                    {{ __('Forgot your password?') }}
-                </a>
-            @endif
+    <!-- Custom JS -->
+    <script src="{{ asset('js/custom.mini.nav.js') }}"></script>
+</body>
 
-            <x-primary-button class="ms-3">
-                {{ __('Log in') }}
-            </x-primary-button>
-        </div>
-    </form>
-</x-guest-layout>
+</html>
