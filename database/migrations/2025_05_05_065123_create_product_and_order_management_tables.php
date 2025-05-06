@@ -3,11 +3,15 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 class CreateProductAndOrderManagementTables extends Migration
 {
     public function up()
     {
+        // Disable foreign key checks to avoid issues while dropping tables
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+
         // Create clients table first to avoid foreign key constraint issues
         Schema::create('clients', function (Blueprint $table) {
             $table->id();
@@ -85,10 +89,16 @@ class CreateProductAndOrderManagementTables extends Migration
             $table->foreignId('billing_cycle_id')->constrained('billing_cycles');
             $table->timestamps();
         });
+
+        // Re-enable foreign key checks after migrations are complete
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 
     public function down()
     {
+        // Disable foreign key checks before dropping tables
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+
         Schema::dropIfExists('order_billing_cycle');
         Schema::dropIfExists('billing_cycles');
         Schema::dropIfExists('product_stock_counts');
@@ -98,5 +108,8 @@ class CreateProductAndOrderManagementTables extends Migration
         Schema::dropIfExists('products');
         Schema::dropIfExists('product_categories');
         Schema::dropIfExists('clients');
+
+        // Re-enable foreign key checks after dropping tables
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 }
