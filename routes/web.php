@@ -7,7 +7,7 @@ use App\Http\Controllers\Orders\OrderController;
 use App\Http\Controllers\Billing\InvoiceController;
 // use App\Http\Controllers\Billing\PaymentController;
 use App\Http\Controllers\Support\TicketController;
-
+use App\Http\Controllers\Backup\BackupController;
 
 
 
@@ -156,6 +156,19 @@ Route::middleware('auth')->group(function () {
     // // =====================
     // // System Settings (Admin Only)
     // // =====================
+
+
+    // // =====================
+    // // Backup (Admin Only)
+    // // =====================
+
+    Route::get('/backup', [BackupController::class, 'index'])->name('backup.index');
+    Route::post('/backup/create', [BackupController::class, 'createBackup'])->name('backup.create');
+    Route::get('/backup/download/{filename}', [BackupController::class, 'downloadBackup'])->name('backup.download');
+    Route::delete('/backup/delete/{filename}', [BackupController::class, 'deleteBackup'])->name('backup.delete');
+    Route::post('/backup/now', [BackupController::class, 'backupNow'])->name('backup.now');
+
+
     // Route::middleware('role:admin')->group(function () {
     //     Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
     //     Route::get('/settings/timezone', [SettingController::class, 'timezone'])->name('timezone.settings');

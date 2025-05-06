@@ -74,6 +74,13 @@
                     <span class="nav-text">System Settings</span>
                 </a></li>
             @endrole --}}
+
+             <!-- Backup Section This also for admin -->
+            <li><a href="{{ route('backup.index') }}">
+                <i class="mdi mdi-chart-line"></i>
+                <span class="nav-text">Backup</span>
+            </a></li>
+
         </ul>
     </div>
 </div>
