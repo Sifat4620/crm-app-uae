@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Roles;
 
 use App\Enum\Super;
+use App\Models\User;
+use App\Enum\Permissions;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Permission;
 
 class RoleController extends Controller
@@ -95,5 +98,58 @@ class RoleController extends Controller
 
         $role->delete();
         return redirect()->route('roles.index')->with('success', 'Role Deleted');
+    }
+
+    /**
+     * Assign role to user
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\User $user
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function assign_role_to_user(Request $request, User $user)
+    {
+        // if (!Auth::user()->can(Permissions::USER_ROLE)) {
+        //     abort(403);
+        // }
+
+        if ($user->hasRole(Super::Admin) && !Auth::user()->hasRole(Super::Admin)) {
+            abort(401);
+        }
+        if (Auth::user()->id == $user->id) {
+            abort(404);
+        }
+
+        $request->validate([
+            'role' => 'exists:roles,id'
+        ]);
+
+        // As Spatie Laravel Permission does not provide a direct method to assign a
+        // role by its ID. So, we have to find the role by its ID first.
+        $role = Role::find($request->role);
+        $user->syncRoles($role->name);
+
+        return redirect()->back()->with('success', 'Role assigned successfully');
+    }
+
+    /**
+     * Sync permissions to role
+     * @param \Illuminate\Http\Request $request
+     * @param \Spatie\Permission\Models\Role $role
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function sync_permissions_to_role(Request $request, Role $role)
+    {
+        // if (!Auth::user()->can(Permissions::ROLE_PERMISSION)) {
+        //     abort(403);
+        // }
+
+        $request->validate([
+            'permissions' => 'array',
+            'permissions.*' => 'exists:permissions,name'
+        ]);
+
+        $role->syncPermissions($request->permissions);
+
+        return redirect()->back()->with('success', 'Permissions assigned successfully');
     }
 }

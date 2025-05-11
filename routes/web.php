@@ -138,6 +138,8 @@ Route::middleware('auth')->group(function () {
 
     // Roles route
     Route::resource('roles', RoleController::class);
+    Route::patch('assign_role_to_user/{user}', [RoleController::class, 'assign_role_to_user'])->name('assign_role_to_user');
+    Route::patch('sync_permissions_to_role/{role}', [RoleController::class, 'sync_permissions_to_role'])->name('sync_permissions_to_role');
 
 });
 

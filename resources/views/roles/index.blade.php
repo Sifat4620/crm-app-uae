@@ -43,7 +43,13 @@
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $role->name }}</td>
-                                            <td></td>
+                                            <td>
+                                                @foreach ($role->permissions as $permissions)
+                                                    <span class="btn btn-sm" style="background-color: #007bff; color: #fff;">
+                                                        {{ $permissions->name }}
+                                                    </span>
+                                                @endforeach
+                                            </td>
                                             <td>
                                                 <a href="{{ route('roles.edit', $role) }}"
                                                     class="btn btn-warning btn-sm">Edit</a>
