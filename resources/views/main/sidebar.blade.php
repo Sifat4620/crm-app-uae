@@ -40,8 +40,11 @@
                     <span class="nav-text">Invoices & Payments</span>
                 </a>
                 <ul aria-expanded="false">
-                    {{-- <li><a href="{{ route('invoice.index') }}">Invoices</a></li>
-                    <li><a href="{{ route('payments.index') }}">Payments</a></li> --}}
+                    <li><a href="{{ route('invoice.index') }}">Invoices</a></li>
+                    <li><a href="{{ route('invoice.create') }}">Create Invoice</a></li>
+                    {{-- <li><a href="{{ route('invoices.download', $invoice->id) }}">Download Invoice PDF</a></li> --}}
+                    {{-- <li><a href="{{ route('payments.index') }}">Payments</a></li> --}}
+                    
                 </ul>
             </li>
 
@@ -60,8 +63,8 @@
                     <span class="nav-text">Support</span>
                 </a>
                 <ul aria-expanded="false">
-                    {{-- <li><a href="{{ route('tickets.index') }}">Support Tickets</a></li>
-                    <li><a href="{{ route('tickets.create') }}">Raise Ticket</a></li> --}}
+                    <li><a href="{{ route('tickets.index') }}">Support Tickets</a></li>
+                    <li><a href="{{ route('tickets.create') }}">Raise Ticket</a></li>
                 </ul>
             </li>
 
@@ -78,6 +81,13 @@
                     <span class="nav-text">System Settings</span>
                 </a></li>
             @endrole --}}
+
+             <!-- Backup Section This also for admin -->
+            <li><a href="{{ route('backup.index') }}">
+                <i class="mdi mdi-chart-line"></i>
+                <span class="nav-text">Backup</span>
+            </a></li>
+
         </ul>
     </div>
 </div>

@@ -5,6 +5,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Products\ProductCategoryController;
 use App\Http\Controllers\Products\ProductController;
 use App\Http\Controllers\Orders\OrderController;
+use App\Http\Controllers\Billing\InvoiceController;
+// use App\Http\Controllers\Billing\PaymentController;
+use App\Http\Controllers\Support\TicketController;
+use App\Http\Controllers\Backup\BackupController;
 
 
 
@@ -98,29 +102,52 @@ Route::middleware('auth')->group(function () {
 
 
 
+    
+
+        // =====================
+        // Invoice & Payment System Routes
+        // =====================
+
+        Route::prefix('invoices')->group(function () {
+            Route::get('/', [InvoiceController::class, 'index'])->name('invoice.index');
+            Route::get('/create', [InvoiceController::class, 'create'])->name('invoice.create');
+            Route::post('/', [InvoiceController::class, 'store'])->name('invoices.store');
+            Route::get('/{invoice}', [InvoiceController::class, 'show'])->name('invoice.show');
+            Route::get('/{invoice}/edit', [InvoiceController::class, 'edit'])->name('invoice.edit');
+            Route::put('/{invoice}', [InvoiceController::class, 'update'])->name('invoice.update');
+            Route::delete('/{invoice}', [InvoiceController::class, 'destroy'])->name('invoice.destroy');
+            Route::get('/{invoice}/download', [InvoiceController::class, 'download'])->name('invoices.download');
+        });
+
+
+        // // Payment Routes
+        // Route::get('/payments', [PaymentController::class, 'index'])->name('payments.index');   // View all payments
+        // Route::get('/payments/{payment}', [PaymentController::class, 'show'])->name('payments.show');   // View a single payment
+        // Route::post('/payments', [PaymentController::class, 'store'])->name('payments.store');   // Record a new payment
+        // Route::get('/payments/create', [PaymentController::class, 'create'])->name('payments.create');   // Create a payment entry
+
+        // // Additional Routes for Invoice Status Management
+        // Route::get('/invoices/status/{status}', [InvoiceController::class, 'filterByStatus'])->name('invoice.filterByStatus');   // Filter invoices by status (e.g., Paid, Due, Overdue)
+
+        // // Reports Routes
+        // Route::get('/payments/report', [PaymentController::class, 'generateReport'])->name('payments.report');   // Generate payment report
+        // Route::get('/invoices/report', [InvoiceController::class, 'generateReport'])->name('invoices.report');   // Generate invoice report
 
 
 
 
 
-
-
-
-    // // =====================
-    // // Invoice & Payment System
-    // // =====================
-    // Route::get('/invoices', [InvoiceController::class, 'index'])->name('invoice.index');
-    // Route::get('/invoices/create', [InvoiceController::class, 'create'])->name('invoice.create');
-    // Route::post('/invoices', [InvoiceController::class, 'store'])->name('invoice.store'); 
-    // Route::get('/payments', [PaymentController::class, 'index'])->name('payments.index');
 
     // // =====================
     // // Support & Ticket System
     // // =====================
-    // Route::get('/tickets', [TicketController::class, 'index'])->name('tickets.index');
-    // Route::get('/tickets/create', [TicketController::class, 'create'])->name('tickets.create');
-    // Route::post('/tickets', [TicketController::class, 'store'])->name('tickets.store'); 
+    Route::get('/tickets', [TicketController::class, 'index'])->name('tickets.index');
+    Route::get('/tickets/create', [TicketController::class, 'create'])->name('tickets.create');
+    Route::post('/tickets', [TicketController::class, 'store'])->name('tickets.store');
+    Route::get('/tickets/{id}', [TicketController::class, 'show'])->name('tickets.show');
 
+
+    
     // // =====================
     // // Financial Reports & Expenses
     // // =====================
@@ -130,6 +157,19 @@ Route::middleware('auth')->group(function () {
     // // =====================
     // // System Settings (Admin Only)
     // // =====================
+
+
+    // // =====================
+    // // Backup (Admin Only)
+    // // =====================
+
+    Route::get('/backup', [BackupController::class, 'index'])->name('backup.index');
+    Route::post('/backup/create', [BackupController::class, 'createBackup'])->name('backup.create');
+    Route::get('/backup/download/{filename}', [BackupController::class, 'downloadBackup'])->name('backup.download');
+    Route::delete('/backup/delete/{filename}', [BackupController::class, 'deleteBackup'])->name('backup.delete');
+    Route::post('/backup/now', [BackupController::class, 'backupNow'])->name('backup.now');
+
+
     // Route::middleware('role:admin')->group(function () {
     //     Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
     //     Route::get('/settings/timezone', [SettingController::class, 'timezone'])->name('timezone.settings');
