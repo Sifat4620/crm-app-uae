@@ -46,4 +46,23 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    /**
+     * Gets the only one client of current user
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne<Client, User>
+     */
+    public function client()
+    {
+        return $this->hasOne(Client::class);
+    }
+
+    /**
+     * Gets the only one client of current user. 
+     * Please use this method to get client, not the previews one.
+     * @return Client
+     */
+    public function getClient()
+    {
+        return $this->client()->firstOrCreate();
+    }
 }

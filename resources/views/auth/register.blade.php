@@ -57,46 +57,6 @@
                                         @enderror
                                     </div>
 
-                                    <!-- Business Name Input -->
-                                    <div class="form-group">
-                                        <label for="business_name">Business Name</label>
-                                        <input type="text"
-                                            class="form-control @error('business_name') is-invalid @enderror"
-                                            id="business_name" name="business_name" placeholder="Business Name"
-                                            value="{{ old('business_name') }}">
-                                        @error('business_name')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-
-                                    <!-- Vat no Input -->
-                                    <div class="form-group">
-                                        <label for="vat_no">Vat no</label>
-                                        <input type="text" class="form-control @error('vat_no') is-invalid @enderror"
-                                            id="vat_no" name="vat_no" placeholder="Vat no"
-                                            value="{{ old('vat_no') }}">
-                                        @error('vat_no')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-
-                                    <!-- Tax no Input -->
-                                    <div class="form-group">
-                                        <label for="tax_no">Tax no</label>
-                                        <input type="text" class="form-control @error('tax_no') is-invalid @enderror"
-                                            id="tax_no" name="tax_no" placeholder="tax no"
-                                            value="{{ old('tax_no') }}">
-                                        @error('tax_no')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-
                                     <!-- National Id Input -->
                                     <div class="form-group">
                                         <label for="national_id">National Id *</label>
@@ -111,19 +71,6 @@
                                         @enderror
                                     </div>
 
-                                    <!-- Mobile Input -->
-                                    <div class="form-group">
-                                        <label for="mobile">Mobile</label>
-                                        <input type="text" class="form-control @error('mobile') is-invalid @enderror"
-                                            id="mobile" name="mobile" placeholder="Mobile"
-                                            value="{{ old('mobile') }}">
-                                        @error('mobile')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-
                                     <!-- Business Number Input -->
                                     <div class="form-group">
                                         <label for="business_number">Business Number *</label>
@@ -132,20 +79,6 @@
                                             id="business_number" name="business_number" placeholder="Business Number"
                                             value="{{ old('business_number') }}">
                                         @error('business_number')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-
-                                    <!-- Telephone Input -->
-                                    <div class="form-group">
-                                        <label for="telephone">Telephone</label>
-                                        <input type="text"
-                                            class="form-control @error('telephone') is-invalid @enderror"
-                                            id="telephone" name="telephone" placeholder="Telephone"
-                                            value="{{ old('telephone') }}">
-                                        @error('telephone')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
@@ -208,110 +141,6 @@
                                             id="zip" name="zip" placeholder="Zip"
                                             value="{{ old('zip') }}">
                                         @error('zip')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-
-                                    <!-- Area Input -->
-                                    <div class="form-group">
-                                        <label for="area">Area</label>
-                                        <input type="text"
-                                            class="form-control @error('area') is-invalid @enderror" id="area"
-                                            name="area" placeholder="Area" value="{{ old('area') }}">
-                                        @error('area')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-
-                                    <!-- House Input -->
-                                    <div class="form-group">
-                                        <label for="house">House</label>
-                                        <input type="text"
-                                            class="form-control @error('house') is-invalid @enderror" id="house"
-                                            name="house" placeholder="House" value="{{ old('house') }}">
-                                        @error('house')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-
-                                    <!-- Whatsapp Input -->
-                                    <div class="form-group">
-                                        <label for="whatsapp">Whatsapp</label>
-                                        <input type="text"
-                                            class="form-control @error('whatsapp') is-invalid @enderror"
-                                            id="whatsapp" name="whatsapp" placeholder="Whatsapp"
-                                            value="{{ old('whatsapp') }}">
-                                        @error('whatsapp')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-
-                                    <!-- Vibre Input -->
-                                    <div class="form-group">
-                                        <label for="vibre">Vibre</label>
-                                        <input type="text"
-                                            class="form-control @error('vibre') is-invalid @enderror" id="vibre"
-                                            name="vibre" placeholder="vibre" value="{{ old('vibre') }}">
-                                        @error('vibre')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-
-                                    <!-- Imo Input -->
-                                    <div class="form-group">
-                                        <label for="imo">Imo</label>
-                                        <input type="text" class="form-control @error('imo') is-invalid @enderror"
-                                            id="imo" name="imo" placeholder="imo"
-                                            value="{{ old('imo') }}">
-                                        @error('imo')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-
-                                    <!-- Website Input -->
-                                    <div class="form-group">
-                                        <label for="website">Website</label>
-                                        <input type="url"
-                                            class="form-control @error('website') is-invalid @enderror"
-                                            id="website" name="website" placeholder="website"
-                                            value="{{ old('website') }}">
-                                        @error('website')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-
-                                    <!-- Notes Input -->
-                                    <div class="form-group">
-                                        <label for="notes">Notes</label>
-                                        <textarea type="url" class="form-control @error('notes') is-invalid @enderror" id="notes" name="notes"
-                                            placeholder="Notes">{{ old('notes') }}</textarea>
-                                        @error('notes')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-
-                                    <!-- Admin Notes Input -->
-                                    <div class="form-group">
-                                        <label for="admin_notes">Admin Notes</label>
-                                        <textarea type="url" class="form-control @error('admin_notes') is-invalid @enderror" id="admin_notes"
-                                            name="admin_notes" placeholder="Admin Notes">{{ old('admin_notes') }}</textarea>
-                                        @error('admin_notes')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
