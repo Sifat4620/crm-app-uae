@@ -15,9 +15,27 @@ class CreateProductAndOrderManagementTables extends Migration
         // Create clients table first to avoid foreign key constraint issues
         Schema::create('clients', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->string('phone')->nullable();
+            $table->string('business_name')->nullable();
+            $table->string('vat_no')->nullable();
+            $table->string('tax_no')->nullable();
+            $table->string('national_id')->nullable();
+            $table->string('business_number')->nullable();
+            $table->string('tel')->nullable();
+            $table->string('gender')->nullable();
+            $table->string('country')->nullable();
+            $table->string('state')->nullable();
+            $table->string('city')->nullable();
+            $table->string('zip')->nullable();
+            $table->string('area')->nullable();
+            $table->string('house')->nullable();
+            $table->string('whatsapp')->nullable();
+            $table->string('vibre')->nullable();
+            $table->string('imo')->nullable();
+            $table->string('website')->nullable();
+            $table->text('notes')->nullable();
+            $table->text('admin_notes')->nullable();
             $table->timestamps();
         });
 
