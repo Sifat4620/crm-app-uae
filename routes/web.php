@@ -10,7 +10,7 @@ use App\Http\Controllers\Support\TicketController;
 use App\Http\Controllers\Billing\InvoiceController;
 use App\Http\Controllers\Products\ProductController;
 use App\Http\Controllers\Products\ProductCategoryController;
-
+use App\Http\Controllers\Billing\BillingCycleController;
 
 
 Route::middleware('auth')->group(function () {
@@ -97,11 +97,21 @@ Route::middleware('auth')->group(function () {
         // Product Stock & Order Processing Time
         Route::get('/product/{productId}/check-stock', [OrderController::class, 'checkStock'])->name('check-stock');
 
-        // Billing Cycle Options
-        Route::get('/billing-options', [OrderController::class, 'billingOptions'])->name('billing-options');
+        // // Billing Cycle Options
+        // Route::get('/billing-options', [OrderController::class, 'billingOptions'])->name('billing-options');
     });
 
-
+    // =====================
+    // Billing Cycle Options
+    // =====================
+    Route::prefix('billing-cycles')->name('billing-cycles.')->group(function () {
+        Route::get('/', [BillingCycleController::class, 'index'])->name('index');
+        Route::get('/create', [BillingCycleController::class, 'create'])->name('create');
+        Route::post('/', [BillingCycleController::class, 'store'])->name('store');
+        Route::get('/{billingCycle}/edit', [BillingCycleController::class, 'edit'])->name('edit');
+        Route::put('/{billingCycle}', [BillingCycleController::class, 'update'])->name('update');
+        Route::delete('/{billingCycle}', [BillingCycleController::class, 'destroy'])->name('destroy');
+    });
 
     
 

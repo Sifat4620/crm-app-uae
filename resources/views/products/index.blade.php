@@ -171,8 +171,9 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="card shadow-sm">
-                    <div class="card-header">
+                    <div class="card-header d-flex justify-content-between align-items-center">
                         <h4 class="card-title">Billing Cycles</h4>
+                        <a href="{{ route('billing-cycles.create') }}" class="btn btn-primary">+ Add Billing Cycle</a>
                     </div>
                     <div class="card-body">
                         <table class="table table-bordered table-hover">
@@ -191,8 +192,8 @@
                                         <td>{{ $cycle->cycle_name }}</td>
                                         <td>{{ $cycle->duration_in_days }}</td>
                                         <td>
-                                            <a href="{{ route('billing.cycles.edit', $cycle->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                                            <form action="{{ route('billing.cycles.destroy', $cycle->id) }}" method="POST" class="d-inline">
+                                            <a href="{{ route('billing-cycles.edit', $cycle->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                                            <form action="{{ route('billing-cycles.destroy', $cycle->id) }}" method="POST" class="d-inline">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-danger btn-sm">Delete</button>
@@ -210,6 +211,7 @@
                 </div>
             </div>
         </div>
+
 
     </div>
 </div>

@@ -23,12 +23,13 @@ class DatabaseSeeder extends Seeder
         User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
-            'password' => Hash::make('12345678'), // Hashing the password
+            'password' => Hash::make('12345678'), 
         ]);
 
         $user = User::factory()->create([
             'name' => 'Super Admin',
             'email' => 'admin@crm.com',
+            'password' => Hash::make('12345678'), 
         ]);
 
         // Will create a Role named for Super Admin
