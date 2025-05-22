@@ -13,7 +13,7 @@ use App\Http\Controllers\Products\ProductCategoryController;
 use App\Http\Controllers\Billing\BillingCycleController;
 
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'verified'])->group(function () {
 
     // =====================
     // Dashboard
