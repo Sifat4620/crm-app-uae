@@ -69,33 +69,20 @@ Route::middleware('auth')->group(function () {
     // =====================
     // Order Management
     // =====================
-    Route::prefix('orders')->name('orders.')->group(function () {
-        // Show all orders
-        Route::get('/', [OrderController::class, 'index'])->name('index');
-
-        // Create a new order (show form)
-        Route::get('/create', [OrderController::class, 'create'])->name('create');
-
-        // Store a new order (submit form)
-        Route::post('/', [OrderController::class, 'store'])->name('store');
-
-        // Show a specific order by ID
-        Route::get('/{id}', [OrderController::class, 'show'])->name('show');
+    Route::resource('orders', OrderController::class);
+    Route::prefix('orders')->name('orders.')->controller(OrderController::class)->group(function () {
 
         // Update the status of an order
-        Route::get('/status/{status}', [OrderController::class, 'status'])->name('status');
+        Route::get('/status/{status}', 'status')->name('status');
 
         // Track the order
-        Route::get('/track/{id}', [OrderController::class, 'trackOrder'])->name('track');
-
-        // Update the status of a specific order
-        Route::put('/{id}/update-status', [OrderController::class, 'updateStatus'])->name('update-status');
+        Route::get('/track/{id}', 'trackOrder')->name('track');
 
         // Client-Wise Products
-        Route::get('/client/{clientId}/products', [OrderController::class, 'clientProducts'])->name('client-products');
+        Route::get('/client/{clientId}/products', 'clientProducts')->name('client-products');
 
         // Product Stock & Order Processing Time
-        Route::get('/product/{productId}/check-stock', [OrderController::class, 'checkStock'])->name('check-stock');
+        Route::get('/product/{productId}/check-stock',  'checkStock')->name('check-stock');
 
         // // Billing Cycle Options
         // Route::get('/billing-options', [OrderController::class, 'billingOptions'])->name('billing-options');

@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers\Orders;
 
-use App\Http\Controllers\Controller;
 use App\Models\Order;
-use App\Models\Product;
 use App\Models\Client;
+use App\Models\Product;
+use App\Models\BillingCycle;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use function PHPUnit\Framework\isNull;
 
 class OrderController extends Controller
 {
@@ -20,9 +23,10 @@ class OrderController extends Controller
     // Show the form to create a new order
     public function create()
     {
-        $clients = Client::all(); // Fetch all clients
-        $products = Product::all(); // Fetch all products
-        return view('Orders.create', compact('clients', 'products'));
+        $clients  = Client::all();                               // Fetch all clients
+        $products = Product::orderBy('name')->get();             // Fetch all products
+        $billing  = BillingCycle::orderBy('cycle_name')->get();
+        return view('orders.create', compact(['clients', 'products', 'billing']));
     }
 
     // Store a newly created order
@@ -30,21 +34,27 @@ class OrderController extends Controller
     {
         // Validate the incoming request
         $request->validate([
-            'client_id' => 'required|exists:clients,id',
-            'product_id' => 'required|exists:products,id',
-            'quantity' => 'required|integer|min:1',
-            'status' => 'required|in:Active,Processing,Pending,Canceled,Terminated,Fraud',
+            'product'  => ['required', 'exists:products,id'],
+            'billing'  => ['required', 'exists:billing_cycles,id'],
+            'quantity' => ['required', 'integer', 'min:1'],
         ]);
 
         // Fetch the product price
-        $product = Product::find($request->product_id);
+        $product    = Product::find($request->product);
         $totalPrice = $product->price * $request->quantity;
+
+        $client = Auth::user()->client;
+        if (is_null($client)) {
+            return redirect()->back()->with('error', 'You can\'t create an order. Because no client data found to you');
+        } else {
+            $client_id = Auth::user()->client->id;
+        }
 
         // Create the order
         Order::create([
-            'client_id' => $request->client_id,
-            'product_id' => $request->product_id,
-            'status' => $request->status,
+            'client_id' => $client_id,
+            'product_id' => $product->id,
+            'billing_cycle_id' => $request->billing,
             'quantity' => $request->quantity,
             'total_price' => $totalPrice,
         ]);
