@@ -17,6 +17,7 @@
     
     <!-- Modernizr (for feature detection) -->
     <script src="{{ asset('js/modernizr.3.6.0.min.js') }}"></script>
+    @yield('customStyle')
 </head>
 
 <body class="v-light compact-nav fix-header fix-sidebar">
@@ -53,7 +54,7 @@
     
     <!-- Custom dashboard script -->
     <script src="{{ asset('js/dashboard.1.js') }}"></script>
-    
+    @yield('customScript')
 </body>
 
 </html>

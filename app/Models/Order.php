@@ -6,10 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
-    protected $table = 'orders';  // specify the table if it's different
-    protected $fillable = [
-        'client_id', 'product_id', 'status', 'quantity', 'total_price'
-    ];
+    /**
+     * Keep the column names here that can not be mass assignable
+     * @var array
+     */
+    protected $guarded = [];
 
     // Define relationships or other methods if needed
     public function client()
