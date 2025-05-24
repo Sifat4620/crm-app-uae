@@ -4,6 +4,8 @@ namespace Database\Seeders;
 
 use App\Enum\Super;
 use App\Models\Company;
+use App\Models\Product;
+use App\Models\ProductCategory;
 use App\Models\User;
 use App\Enum\Permissions;
 use Illuminate\Database\Seeder;
@@ -45,5 +47,8 @@ class DatabaseSeeder extends Seeder
                 'name' => $case->value,
             ]);
         }
+
+        ProductCategory::factory(5)->create(); // Make some product category
+        Product::factory(50)->create(); // Make some product also
     }
 }

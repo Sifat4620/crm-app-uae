@@ -49,7 +49,7 @@ class CreateProductAndOrderManagementTables extends Migration
         // Create products table
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('category_id')->constrained('product_categories');
+            $table->foreignId('category_id')->constrained('product_categories')->cascadeOnDelete();
             $table->string('name');
             $table->text('description')->nullable();
             $table->decimal('price', 10, 2);
@@ -69,9 +69,10 @@ class CreateProductAndOrderManagementTables extends Migration
         // Create orders table after clients table
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('client_id')->constrained('clients');
-            $table->foreignId('product_id')->constrained('products');
-            $table->enum('status', ['Active', 'Processing', 'Pending', 'Canceled', 'Terminated', 'Fraud'])->default('Pending');
+            $table->foreignId('client_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('product_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('billing_cycle_id')->constrained()->cascadeOnDelete();
+            $table->enum('status', ['active', 'processing', 'pending', 'canceled', 'terminated', 'fraud'])->default('pending')->nullable();
             $table->integer('quantity');
             $table->decimal('total_price', 10, 2);
             $table->timestamps();
