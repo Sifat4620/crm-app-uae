@@ -78,8 +78,8 @@
                     <li><a href="{{ route('payments.report') }}">Payment Report</a></li>
 
                     {{-- Manual Gateways & Accounts --}}
-                    <li><a href="{{ route('payment-gateways.index') }}">Payment Gateways</a></li>
-                    <li><a href="{{ route('payment-accounts.index') }}">Payment Accounts</a></li>
+                    {{-- <li><a href="{{ route('payment-gateways.index') }}">Payment Gateways</a></li> --}}
+                    {{-- <li><a href="{{ route('payment-accounts.index') }}">Payment Accounts</a></li> --}}
 
                     {{-- Cash Management --}}
                     <li><a href="{{ route('cash-transactions.index') }}">Cash Transactions</a></li>

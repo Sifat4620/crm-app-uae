@@ -120,9 +120,13 @@ class PaymentController extends Controller
 
 
     // Payment report (optional)
-    public function report()
+    public function generateReport()
     {
-        $payments = Payment::with('order', 'client')->orderBy('created_at', 'desc')->get();
+        $payments = Payment::with('order', 'client')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
         return view('payment.payments.report', compact('payments'));
     }
+
 }

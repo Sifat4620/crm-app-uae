@@ -135,39 +135,41 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('/', [PaymentController::class, 'index'])->name('payments.index');
             Route::get('/create', [PaymentController::class, 'create'])->name('payments.create');
             Route::post('/', [PaymentController::class, 'store'])->name('payments.store');
-            Route::get('/{payment}', [PaymentController::class, 'show'])->name('payments.show');
-
+            // Put report BEFORE {payment} route
             Route::get('/report', [PaymentController::class, 'generateReport'])->name('payments.report');
+
+            // Keep this last to avoid conflicts
+            Route::get('/{payment}', [PaymentController::class, 'show'])->name('payments.show');
         });
 
 
-        // Payment Gateways routes
-        Route::prefix('payment-gateways')->name('payment-gateways.')->group(function () {
-            Route::get('/', [PaymentGatewayController::class, 'index'])->name('index');
-            Route::get('/create', [PaymentGatewayController::class, 'create'])->name('create');
-            Route::post('/', [PaymentGatewayController::class, 'store'])->name('store');
-            Route::get('/{gateway}/edit', [PaymentGatewayController::class, 'edit'])->name('edit');
-            Route::put('/{gateway}', [PaymentGatewayController::class, 'update'])->name('update');
-            Route::delete('/{gateway}', [PaymentGatewayController::class, 'destroy'])->name('destroy');
-        });
+        // // Payment Gateways routes
+        // Route::prefix('payment-gateways')->name('payment-gateways.')->group(function () {
+        //     Route::get('/', [PaymentGatewayController::class, 'index'])->name('index');
+        //     Route::get('/create', [PaymentGatewayController::class, 'create'])->name('create');
+        //     Route::post('/', [PaymentGatewayController::class, 'store'])->name('store');
+        //     Route::get('/{gateway}/edit', [PaymentGatewayController::class, 'edit'])->name('edit');
+        //     Route::put('/{gateway}', [PaymentGatewayController::class, 'update'])->name('update');
+        //     Route::delete('/{gateway}', [PaymentGatewayController::class, 'destroy'])->name('destroy');
+        // });
 
-        // Payment Accounts routes
-        Route::prefix('payment-accounts')->name('payment-accounts.')->group(function () {
-            Route::get('/', [PaymentAccountController::class, 'index'])->name('index');
-            Route::get('/create', [PaymentAccountController::class, 'create'])->name('create');
-            Route::post('/', [PaymentAccountController::class, 'store'])->name('store');
-            Route::get('/{account}/edit', [PaymentAccountController::class, 'edit'])->name('edit');
-            Route::put('/{account}', [PaymentAccountController::class, 'update'])->name('update');
-            Route::delete('/{account}', [PaymentAccountController::class, 'destroy'])->name('destroy');
-        });
+        // // Payment Accounts routes
+        // Route::prefix('payment-accounts')->name('payment-accounts.')->group(function () {
+        //     Route::get('/', [PaymentAccountController::class, 'index'])->name('index');
+        //     Route::get('/create', [PaymentAccountController::class, 'create'])->name('create');
+        //     Route::post('/', [PaymentAccountController::class, 'store'])->name('store');
+        //     Route::get('/{account}/edit', [PaymentAccountController::class, 'edit'])->name('edit');
+        //     Route::put('/{account}', [PaymentAccountController::class, 'update'])->name('update');
+        //     Route::delete('/{account}', [PaymentAccountController::class, 'destroy'])->name('destroy');
+        // });
 
-        // Cash Transactions routes
-        Route::prefix('cash-transactions')->name('cash-transactions.')->group(function () {
-            Route::get('/', [CashTransactionController::class, 'index'])->name('index');
-            Route::get('/report', [CashTransactionController::class, 'report'])->name('report');
-            Route::get('/create', [CashTransactionController::class, 'create'])->name('create');
-            Route::post('/', [CashTransactionController::class, 'store'])->name('store');
-        });
+        // // Cash Transactions routes
+        // Route::prefix('cash-transactions')->name('cash-transactions.')->group(function () {
+        //     Route::get('/', [CashTransactionController::class, 'index'])->name('index');
+        //     Route::get('/report', [CashTransactionController::class, 'report'])->name('report');
+        //     Route::get('/create', [CashTransactionController::class, 'create'])->name('create');
+        //     Route::post('/', [CashTransactionController::class, 'store'])->name('store');
+        // });
 
 
 
