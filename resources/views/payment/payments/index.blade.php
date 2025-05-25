@@ -47,12 +47,15 @@
                                         <td>${{ number_format($order->total_price, 2) }}</td>
                                         <td>{{ $order->created_at->format('d M Y') }}</td>
                                         <td>
-                                            @if($order->status !== 'Canceled' && $order->status !== 'Terminated')
-                                                <a href="{{ route('payments.create', ['order_id' => $order->id]) }}" class="btn btn-sm btn-primary">Pay</a>
-                                            @else
-                                                <span class="text-muted">N/A</span>
-                                            @endif
+                                                @if($order->has_paid)
+                                                    <span class="badge badge-success">Payment Complete</span>
+                                                @elseif(!in_array($order->status, ['Canceled', 'Terminated']))
+                                                    <a href="{{ route('payments.create', ['order_id' => $order->id]) }}" class="btn btn-sm btn-primary">Pay</a>
+                                                @else
+                                                    <span class="text-muted">N/A</span>
+                                                @endif
                                         </td>
+
                                     </tr>
                                 @empty
                                     <tr>
