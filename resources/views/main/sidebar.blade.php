@@ -48,7 +48,7 @@
             <li class="has-arrow">
                 <a href="#" aria-expanded="false">
                     <i class="mdi mdi-cash"></i>
-                    <span class="nav-text">Invoices & Payments</span>
+                    <span class="nav-text">Invoices</span>
                 </a>
                 <ul aria-expanded="false">
                     {{-- Invoice Actions --}}

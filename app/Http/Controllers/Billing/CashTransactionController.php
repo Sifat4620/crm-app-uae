@@ -1,65 +1,38 @@
 <?php
 
-namespace App\Http\Controllers\Billing;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use App\Models\CashTransaction;
 use Illuminate\Http\Request;
 
 class CashTransactionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $transactions = CashTransaction::latest()->paginate(20);
+        return view('payment.cash-transactions.index', compact('transactions'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    public function report()
+    {
+        $transactions = CashTransaction::all();
+        return view('payment.cash-transactions.report', compact('transactions'));
+    }
+
     public function create()
     {
-        //
+        return view('payment.cash-transactions.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
-    }
+        $request->validate([
+            'amount' => 'required|numeric',
+            'type' => 'required|in:credit,debit',
+            'note' => 'nullable|string',
+        ]);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        CashTransaction::create($request->all());
+        return redirect()->route('cash-transactions.index')->with('success', 'Cash transaction recorded.');
     }
 }

@@ -56,6 +56,7 @@ class OrderController extends Controller
             'product_id'  => $product->id,
             'quantity'    => $request->quantity,
             'total_price' => $totalPrice,
+            'billing_cycle_id' => $request->billing, 
         ]);
 
         // Insert billing cycle relation into pivot table

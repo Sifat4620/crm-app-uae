@@ -1,65 +1,52 @@
 <?php
+namespace App\Http\Controllers;
 
-namespace App\Http\Controllers\Billing;
-
-use App\Http\Controllers\Controller;
+use App\Models\PaymentGateway;
 use Illuminate\Http\Request;
 
 class PaymentGatewayController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $gateways = PaymentGateway::all();
+        return view('payment.payment-gateways.index', compact('gateways'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return view('payment.payment-gateways.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'status' => 'required|boolean',
+        ]);
+
+        PaymentGateway::create($request->all());
+        return redirect()->route('payment-gateways.index')->with('success', 'Payment gateway added.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function edit(PaymentGateway $gateway)
     {
-        //
+        return view('payment.payment-gateways.edit', compact('gateway'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function update(Request $request, PaymentGateway $gateway)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'status' => 'required|boolean',
+        ]);
+
+        $gateway->update($request->all());
+        return redirect()->route('payment-gateways.index')->with('success', 'Payment gateway updated.');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function destroy(PaymentGateway $gateway)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        $gateway->delete();
+        return redirect()->route('payment-gateways.index')->with('success', 'Payment gateway deleted.');
     }
 }

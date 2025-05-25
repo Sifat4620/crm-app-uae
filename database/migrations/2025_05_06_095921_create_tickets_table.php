@@ -12,17 +12,27 @@ return new class extends Migration
     {
         $tableName = config('laravel_ticket.table_names.tickets', 'tickets');
 
-        Schema::create($tableName, function (Blueprint $table) {
-            $table->id();
-            $table->uuid('uuid')->nullable();
-            $table->foreignId('user_id');
-            $table->string('title');
-            $table->string('message')->nullable();
-            $table->string('priority')->default('low');
-            $table->string('status')->default('open');
-            $table->boolean('is_resolved')->default(false);
-            $table->boolean('is_locked')->default(false);
-            $table->timestamps();
-        });
+        // Check if the table already exists before creating
+        if (!Schema::hasTable($tableName)) {
+            Schema::create($tableName, function (Blueprint $table) {
+                $table->id();
+                $table->uuid('uuid')->nullable();
+                $table->foreignId('user_id');
+                $table->string('title');
+                $table->string('message')->nullable();
+                $table->string('priority')->default('low');
+                $table->string('status')->default('open');
+                $table->boolean('is_resolved')->default(false);
+                $table->boolean('is_locked')->default(false);
+                $table->timestamps();
+            });
+        }
+    }
+
+    public function down()
+    {
+        $tableName = config('laravel_ticket.table_names.tickets', 'tickets');
+
+        Schema::dropIfExists($tableName);
     }
 };

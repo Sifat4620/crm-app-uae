@@ -24,11 +24,11 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-            'password' => Hash::make('12345678'), 
-        ]);
+        // User::factory()->create([
+        //     'name' => 'Test User',
+        //     'email' => 'test@example.com',
+        //     'password' => Hash::make('12345678'), 
+        // ]);
 
         $user = User::factory()->create([
             'name' => 'Super Admin',
@@ -50,8 +50,8 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
-        ProductCategory::factory(5)->create(); 
-        Product::factory(50)->create(); 
+        // ProductCategory::factory(5)->create(); 
+        // Product::factory(50)->create(); 
         $this->call(OrderStatusSeeder::class); 
     }
 

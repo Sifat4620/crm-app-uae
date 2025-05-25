@@ -1,65 +1,54 @@
 <?php
+namespace App\Http\Controllers;
 
-namespace App\Http\Controllers\Billing;
-
-use App\Http\Controllers\Controller;
+use App\Models\PaymentAccount;
 use Illuminate\Http\Request;
 
 class PaymentAccountController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $accounts = PaymentAccount::all();
+        return view('payment.payment-accounts.index', compact('accounts'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return view('payment.payment-accounts.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'gateway_id' => 'required|exists:payment_gateways,id',
+            'account_name' => 'required|string|max:255',
+            'account_number' => 'nullable|string|max:255',
+        ]);
+
+        PaymentAccount::create($request->all());
+        return redirect()->route('payment-accounts.index')->with('success', 'Payment account created.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function edit(PaymentAccount $account)
     {
-        //
+        return view('payment.payment-accounts.edit', compact('account'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function update(Request $request, PaymentAccount $account)
     {
-        //
+        $request->validate([
+            'gateway_id' => 'required|exists:payment_gateways,id',
+            'account_name' => 'required|string|max:255',
+            'account_number' => 'nullable|string|max:255',
+        ]);
+
+        $account->update($request->all());
+        return redirect()->route('payment-accounts.index')->with('success', 'Payment account updated.');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function destroy(PaymentAccount $account)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        $account->delete();
+        return redirect()->route('payment-accounts.index')->with('success', 'Payment account deleted.');
     }
 }
