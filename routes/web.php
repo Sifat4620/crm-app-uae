@@ -11,7 +11,7 @@ use App\Http\Controllers\Billing\InvoiceController;
 use App\Http\Controllers\Products\ProductController;
 use App\Http\Controllers\Products\ProductCategoryController;
 use App\Http\Controllers\Billing\BillingCycleController;
-
+use App\Http\Controllers\Clients\UserController;
 
 Route::middleware(['auth', 'verified'])->group(function () {
 
@@ -29,13 +29,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // // =====================
-    // // Client Management
-    // // =====================
-    // Route::get('/users', [UserController::class, 'index'])->name('users.index');
-    // Route::get('/users/register', [UserController::class, 'create'])->name('user.register');
-    // Route::post('/users/register', [UserController::class, 'store'])->name('user.store'); 
-    // Route::get('/user/settings', [UserController::class, 'settings'])->name('user.settings');
+
+    // =====================
+    // Client Management
+    // =====================
+    Route::get('/users', [UserController::class, 'index'])->name('users.index');
+    Route::get('/users/register', [UserController::class, 'create'])->name('user.register');
+    Route::post('/users/register', [UserController::class, 'store'])->name('user.store'); 
+    Route::get('/user/settings', [UserController::class, 'settings'])->name('user.settings');
 
 
 

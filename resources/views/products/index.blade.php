@@ -114,59 +114,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- Orders Section -->
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="card shadow-sm mb-4">
-                    <div class="card-header">
-                        <h4 class="card-title">Orders</h4>
-                    </div>
-                    <div class="card-body">
-                        <table class="table table-bordered table-hover">
-                            <thead class="thead-light">
-                                <tr>
-                                    <th>#</th>
-                                    <th>Order ID</th>
-                                    <th>Client</th>
-                                    <th>Product</th>
-                                    <th>Status</th>
-                                    <th>Quantity</th>
-                                    <th>Total Price</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @forelse($orders as $order)
-                                    <tr>
-                                        <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $order->id }}</td>
-                                        <td>{{ $order->client->name ?? 'Unknown' }}</td>
-                                        <td>{{ $order->product->name ?? 'Unknown' }}</td>
-                                        <td>{{ $order->status }}</td>
-                                        <td>{{ $order->quantity }}</td>
-                                        <td>${{ number_format($order->total_price, 2) }}</td>
-                                        <td>
-                                            <a href="{{ route('orders.edit', $order->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                                            <form action="{{ route('orders.destroy', $order->id) }}" method="POST" class="d-inline">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="8" class="text-center">No Orders Available</td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <!-- Billing Cycles Section -->
         <div class="row">
             <div class="col-lg-12">

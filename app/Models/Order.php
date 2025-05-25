@@ -27,4 +27,5 @@ class Order extends Model
     {
         return $this->belongsToMany(BillingCycle::class, 'order_billing_cycle', 'order_id', 'billing_cycle_id');
     }
+
 }

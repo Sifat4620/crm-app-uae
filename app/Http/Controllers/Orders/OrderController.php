@@ -9,23 +9,24 @@ use App\Models\BillingCycle;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use function PHPUnit\Framework\isNull;
+use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
     // Show all orders
     public function index()
     {
-        $orders = Order::with(['product', 'client'])->get();
+        // Eager load client, product, and billing cycles
+        $orders = Order::with(['client.user', 'product', 'billingCycles'])->get();
         return view('orders.index', compact('orders'));
     }
 
     // Show the form to create a new order
     public function create()
     {
-        $clients  = Client::all();                               // Fetch all clients
-        $products = Product::orderBy('name')->get();             // Fetch all products
-        $billing  = BillingCycle::orderBy('cycle_name')->get();
+        $clients  = Client::all();                              
+        $products = Product::orderBy('name')->get();             
+        $billing  = BillingCycle::orderBy('cycle_name')->get();  
         return view('orders.create', compact(['clients', 'products', 'billing']));
     }
 
@@ -43,20 +44,26 @@ class OrderController extends Controller
         $product    = Product::find($request->product);
         $totalPrice = $product->price * $request->quantity;
 
+        // Get client from authenticated user
         $client = Auth::user()->client;
         if (is_null($client)) {
-            return redirect()->back()->with('error', 'You can\'t create an order. Because no client data found to you');
-        } else {
-            $client_id = Auth::user()->client->id;
+            return redirect()->back()->with('error', 'You can\'t create an order because no client data found for you.');
         }
 
-        // Create the order
-        Order::create([
-            'client_id' => $client_id,
-            'product_id' => $product->id,
-            'billing_cycle_id' => $request->billing,
-            'quantity' => $request->quantity,
+        // Create the order (without billing_cycle_id)
+        $order = Order::create([
+            'client_id'   => $client->id,
+            'product_id'  => $product->id,
+            'quantity'    => $request->quantity,
             'total_price' => $totalPrice,
+        ]);
+
+        // Insert billing cycle relation into pivot table
+        DB::table('order_billing_cycle')->insert([
+            'order_id'         => $order->id,
+            'billing_cycle_id' => $request->billing,
+            'created_at'       => now(),
+            'updated_at'       => now(),
         ]);
 
         return redirect()->route('orders.index')->with('success', 'Order created successfully.');
@@ -65,7 +72,8 @@ class OrderController extends Controller
     // Show the details of a specific order
     public function show($id)
     {
-        $order = Order::with(['product', 'client'])->findOrFail($id);
+        // Eager load client, product, billing cycles
+        $order = Order::with(['client.user', 'product', 'billingCycles'])->findOrFail($id);
         return view('orders.show', compact('order'));
     }
 

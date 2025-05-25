@@ -11,7 +11,9 @@ use App\Enum\Permissions;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
-use Illuminate\Support\Facades\Hash; // Import Hash facade for password hashing
+use Illuminate\Support\Facades\Hash; 
+use Database\Seeders\OrderStatusSeeder;
+
 
 class DatabaseSeeder extends Seeder
 {
@@ -39,7 +41,7 @@ class DatabaseSeeder extends Seeder
             'name' => Super::Admin,
         ]);
         // Assign the Role to User
-        $user->assignRole(Super::Admin);
+        $user->assignRole(Super::Admin->value,);
 
         // Creating all permissions
         foreach (Permissions::cases() as $case) {
@@ -48,7 +50,12 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
-        ProductCategory::factory(5)->create(); // Make some product category
-        Product::factory(50)->create(); // Make some product also
+        ProductCategory::factory(5)->create(); 
+        Product::factory(50)->create(); 
+        $this->call(OrderStatusSeeder::class); 
     }
+
+    
+
+    
 }

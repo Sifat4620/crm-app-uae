@@ -7,6 +7,7 @@
                     <span class="nav-text">Dashboard</span>
                 </a></li>
 
+
             <!-- Client Management Section -->
             <li class="has-arrow">
                 <a href="#" aria-expanded="false">
@@ -14,12 +15,13 @@
                     <span class="nav-text">Clients</span>
                 </a>
                 <ul aria-expanded="false">
-                    {{-- <li><a href="{{ route('users.index') }}">Client List</a></li>
-                    <li><a href="{{ route('user.register') }}">Add Client</a></li> --}}
+                    <li><a href="{{ route('users.index') }}">All Clients</a></li>
+                    <li><a href="{{ route('user.register') }}">Add Client</a></li>
+                    <li><a href="{{ route('user.settings') }}">Client Settings</a></li>
                 </ul>
             </li>
 
-            <!-- Product & Order Management Section -->
+            <!-- Product Management Section -->
             <li class="has-arrow">
                 <a href="#" aria-expanded="false">
                     <i class="mdi mdi-cube"></i>
