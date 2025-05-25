@@ -89,6 +89,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Route::get('/billing-options', [OrderController::class, 'billingOptions'])->name('billing-options');
     });
 
+
+    // Client Order Status Change Route
+    Route::prefix('orders')->name('orders.')->controller(UserController::class)->group(function () {
+      Route::get('/status/{status}', 'status')->name('status');
+    });
+
     // =====================
     // Billing Cycle Options
     // =====================

@@ -39,18 +39,17 @@
                                         <th>Total Spending</th>
                                         <th>Products</th>
                                         <th>Status</th>
-                                        <th>Actions</th> {{-- ✅ New --}}
+                                        <th>Action</th>  {{-- New Column --}}
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @forelse($clients as $index => $client)
                                         @php
-                                            $orders = $client->orders;
-                                            $ordersCount = $orders->count();
-                                            $totalQuantity = $orders->sum('quantity');
-                                            $totalSpending = $orders->sum('total_price');
-                                            $productNames = $orders->pluck('product.name')->unique()->filter()->implode(', ');
-                                            $statuses = $orders->pluck('status')->unique()->filter()->implode(', ');
+                                            $ordersCount = $client->orders->count();
+                                            $totalQuantity = $client->orders->sum('quantity');
+                                            $totalSpending = $client->orders->sum('total_price');
+                                            $productNames = $client->orders->pluck('product.name')->unique()->filter()->implode(', ');
+                                            $statuses = $client->orders->pluck('status')->unique()->implode(', ');
                                         @endphp
                                         <tr>
                                             <td>{{ $clients->firstItem() + $index }}</td>
@@ -63,23 +62,22 @@
                                             <td>${{ number_format($totalSpending, 2) }}</td>
                                             <td>{{ $productNames ?: '-' }}</td>
                                             <td>{{ $statuses ?: '-' }}</td>
-                                            <td>
-                                                {{-- ✅ Show each order status with count --}}
-                                                @foreach($orders->groupBy('status') as $status => $group)
-                                                    <span class="badge bg-info text-dark mb-1">
-                                                        {{ $status }} ({{ $group->count() }})
-                                                    </span><br>
-                                                @endforeach
 
-                                                {{-- Optional View Button --}}
-                                                <a href="{{ route('orders.byClient', $client->id) }}" class="btn btn-sm btn-outline-primary mt-2">
-                                                    View Orders
-                                                </a>
+                                            {{-- Action Dropdown --}}
+                                            <td>
+                                                @foreach($orderStatuses as $status)
+                                                    <a href="{{ route('orders.status', ['status' => $status->status_name, 'client' => $client->id]) }}" 
+                                                    class="btn btn-sm btn-outline-primary me-1 mb-1">
+                                                        {{ $status->status_name }}
+                                                    </a>
+                                                @endforeach
                                             </td>
+
+
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="11" class="text-center">No clients found.</td>
+                                            <td colspan="11" class="text-center">No clients with orders found.</td>
                                         </tr>
                                     @endforelse
                                 </tbody>
