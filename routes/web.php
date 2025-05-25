@@ -164,12 +164,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // });
 
         // // Cash Transactions routes
-        // Route::prefix('cash-transactions')->name('cash-transactions.')->group(function () {
-        //     Route::get('/', [CashTransactionController::class, 'index'])->name('index');
-        //     Route::get('/report', [CashTransactionController::class, 'report'])->name('report');
-        //     Route::get('/create', [CashTransactionController::class, 'create'])->name('create');
-        //     Route::post('/', [CashTransactionController::class, 'store'])->name('store');
-        // });
+        Route::prefix('cash-transactions')->name('cash-transactions.')->group(function () {
+                Route::get('/', [CashTransactionController::class, 'index'])->name('index');
+                Route::get('/report', [CashTransactionController::class, 'report'])->name('report');
+                Route::get('/create', [CashTransactionController::class, 'create'])->name('create');
+                Route::post('/', [CashTransactionController::class, 'store'])->name('store');
+        });
 
 
 
