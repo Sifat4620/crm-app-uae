@@ -51,13 +51,43 @@
                     <span class="nav-text">Invoices & Payments</span>
                 </a>
                 <ul aria-expanded="false">
+                    {{-- Invoice Actions --}}
                     <li><a href="{{ route('invoice.index') }}">Invoices</a></li>
                     <li><a href="{{ route('invoice.create') }}">Create Invoice</a></li>
                     {{-- <li><a href="{{ route('invoices.download', $invoice->id) }}">Download Invoice PDF</a></li> --}}
-                    {{-- <li><a href="{{ route('payments.index') }}">Payments</a></li> --}}
-                    
+
+                    {{-- Invoice Status Filters --}}
+                    <li><a href="{{ route('invoice.filterByStatus', 'paid') }}">Paid Invoices</a></li>
+                    <li><a href="{{ route('invoice.filterByStatus', 'due') }}">Due Invoices</a></li>
+                    <li><a href="{{ route('invoice.filterByStatus', 'overdue') }}">Overdue Invoices</a></li>
+                    <li><a href="{{ route('invoice.filterByStatus', 'refunded') }}">Refunded Invoices</a></li>
+                    <li><a href="{{ route('invoice.filterByStatus', 'canceled') }}">Canceled Invoices</a></li>
                 </ul>
             </li>
+
+            <!-- Payments Management Section -->
+            <li class="has-arrow">
+                <a href="#" aria-expanded="false">
+                    <i class="mdi mdi-cash"></i>
+                    <span class="nav-text">Payments</span>
+                </a>
+                <ul aria-expanded="false">
+                    {{-- Payments --}}
+                    <li><a href="{{ route('payments.index') }}">Payments</a></li>
+                    <li><a href="{{ route('payments.create') }}">Record Payment</a></li>
+                    <li><a href="{{ route('payments.report') }}">Payment Report</a></li>
+
+                    {{-- Manual Gateways & Accounts --}}
+                    <li><a href="{{ route('payment-gateways.index') }}">Payment Gateways</a></li>
+                    <li><a href="{{ route('payment-accounts.index') }}">Payment Accounts</a></li>
+
+                    {{-- Cash Management --}}
+                    <li><a href="{{ route('cash-transactions.index') }}">Cash Transactions</a></li>
+                    <li><a href="{{ route('cash-transactions.report') }}">Cash Report</a></li>
+                </ul>
+            </li>
+
+
 
             <!-- Role & Permission Section -->
             <li class="has-arrow">
