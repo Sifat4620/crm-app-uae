@@ -29,7 +29,7 @@ class BillingCycleController extends Controller
         BillingCycle::create($request->only('cycle_name', 'duration_in_days'));
 
         return redirect()->route('billing-cycles.index')
-                         ->with('success', 'Billing cycle created successfully.');
+            ->with('success', 'Billing cycle created successfully.');
     }
 
     public function edit(BillingCycle $billingCycle)
@@ -46,8 +46,8 @@ class BillingCycleController extends Controller
 
         $billingCycle->update($request->only('cycle_name', 'duration_in_days'));
 
-        return redirect()->route('billing.index')
-                         ->with('success', 'Billing cycle updated successfully.');
+        return redirect()->route('billing-cycles.index')
+            ->with('success', 'Billing cycle updated successfully.');
     }
 
     public function destroy(BillingCycle $billingCycle)
@@ -55,6 +55,6 @@ class BillingCycleController extends Controller
         $billingCycle->delete();
 
         return redirect()->route('billing-cycles.index')
-                         ->with('success', 'Billing cycle deleted successfully.');
+            ->with('success', 'Billing cycle deleted successfully.');
     }
 }

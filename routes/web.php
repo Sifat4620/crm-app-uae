@@ -98,17 +98,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
       Route::get('/status/{status}', 'status')->name('status');
     });
 
-    // =====================
-    // Billing Cycle Options
-    // =====================
-    Route::prefix('billing-cycles')->name('billing-cycles.')->group(function () {
-        Route::get('/', [BillingCycleController::class, 'index'])->name('index');
-        Route::get('/create', [BillingCycleController::class, 'create'])->name('create');
-        Route::post('/', [BillingCycleController::class, 'store'])->name('store');
-        Route::get('/{billingCycle}/edit', [BillingCycleController::class, 'edit'])->name('edit');
-        Route::put('/{billingCycle}', [BillingCycleController::class, 'update'])->name('update');
-        Route::delete('/{billingCycle}', [BillingCycleController::class, 'destroy'])->name('destroy');
-    });
+    // Billing Cycle Routes
+    Route::resource('billing-cycles', BillingCycleController::class);
 
     
 
