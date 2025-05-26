@@ -7,9 +7,9 @@
             <div class="col">
                 <h4>My Support Tickets</h4>
             </div>
-            <div class="col text-end">
+            {{-- <div class="col text-end">
                 <a href="{{ route('tickets.create') }}" class="btn btn-primary">Raise New Ticket</a>
-            </div>
+            </div> --}}
         </div>
 
         @if(session('success'))
