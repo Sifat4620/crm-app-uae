@@ -5,7 +5,7 @@
     <div class="container">
         <div class="row page-titles">
             <div class="col">
-                <h4>Raise a New Ticket</h4>
+                {{-- <h4>Raise a New Ticket</h4> --}}
             </div>
         </div>
 
