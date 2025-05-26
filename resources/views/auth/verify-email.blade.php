@@ -23,6 +23,12 @@
                                 </div>
                             @endif
 
+                            @if (session('status') == 'something-went-wrong')
+                                <div class="mb-4" style="color: red;">
+                                    {{ __('Something went wrong. Could not send email.') }}
+                                </div>
+                            @endif
+
                             <div class="mt-4 flex items-center justify-between">
                                 <form method="POST" action="{{ route('verification.send') }}">
                                     @csrf
