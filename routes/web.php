@@ -57,15 +57,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::put('/{id}', [ProductController::class, 'update'])->name('update');
         Route::delete('/{id}', [ProductController::class, 'destroy'])->name('destroy');
 
-        // Routes for product category management
-        Route::prefix('categories')->name('categories.')->group(function () {
-            Route::get('/', [ProductCategoryController::class, 'index'])->name('index');
-            Route::get('/create', [ProductCategoryController::class, 'create'])->name('create');
-            Route::post('/', [ProductCategoryController::class, 'store'])->name('store');
-            Route::get('/{id}/edit', [ProductCategoryController::class, 'edit'])->name('edit');
-            Route::put('/{id}', [ProductCategoryController::class, 'update'])->name('update');
-            Route::delete('/{id}', [ProductCategoryController::class, 'destroy'])->name('destroy');
-        });
+        Route::resource('categories', ProductCategoryController::class);
     });
 
 

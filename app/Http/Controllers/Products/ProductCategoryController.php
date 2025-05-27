@@ -34,6 +34,11 @@ class ProductCategoryController extends Controller
         return redirect()->route('products.categories.index')->with('success', 'Category added successfully.');
     }
 
+    public function show($id)
+    {
+        abort(404);
+    }
+
     // Show form to edit an existing category
     public function edit($id)
     {
@@ -53,13 +58,13 @@ class ProductCategoryController extends Controller
 
         $category->update($request->only('name', 'description'));
 
-        return redirect()->route('product.categories.index')->with('success', 'Category updated.');
+        return redirect()->route('products.categories.index')->with('success', 'Category updated.');
     }
 
     // Delete a category
     public function destroy($id)
     {
         ProductCategory::findOrFail($id)->delete();
-        return redirect()->route('product.categories.index')->with('success', 'Category deleted.');
+        return redirect()->route('products.categories.index')->with('success', 'Category deleted.');
     }
 }
