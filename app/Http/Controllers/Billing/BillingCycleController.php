@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Billing;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Enum\Permissions;
 use App\Models\BillingCycle;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class BillingCycleController extends Controller
 {
@@ -14,6 +16,10 @@ class BillingCycleController extends Controller
      */
     public function index()
     {
+        if (!Auth::user()->can(Permissions::BillingCycleShow)) {
+            abort(403);
+        }
+
         $cycles = BillingCycle::latest()->get();
         return view('billing.index', compact('cycles'));
     }
@@ -24,6 +30,10 @@ class BillingCycleController extends Controller
      */
     public function create()
     {
+        if (!Auth::user()->can(Permissions::BillingCycleCreate)) {
+            abort(403);
+        }
+
         return view('billing.create');
     }
 
@@ -34,6 +44,10 @@ class BillingCycleController extends Controller
      */
     public function store(Request $request)
     {
+        if (!Auth::user()->can(Permissions::BillingCycleCreate)) {
+            abort(403);
+        }
+
         $request->validate([
             'cycle_name' => 'required|string|max:255',
             'duration_in_days' => 'required|integer|min:1',
@@ -62,6 +76,10 @@ class BillingCycleController extends Controller
      */
     public function edit(BillingCycle $billingCycle)
     {
+        if (!Auth::user()->can(Permissions::BillingCycleEdit)) {
+            abort(403);
+        }
+
         return view('billing.edit', compact('billingCycle'));
     }
 
@@ -73,6 +91,10 @@ class BillingCycleController extends Controller
      */
     public function update(Request $request, BillingCycle $billingCycle)
     {
+        if (!Auth::user()->can(Permissions::BillingCycleEdit)) {
+            abort(403);
+        }
+
         $request->validate([
             'cycle_name' => 'required|string|max:255',
             'duration_in_days' => 'required|integer|min:1',
@@ -91,6 +113,10 @@ class BillingCycleController extends Controller
      */
     public function destroy(BillingCycle $billingCycle)
     {
+        if (!Auth::user()->can(Permissions::BillingCycleDelete)) {
+            abort(403);
+        }
+
         $billingCycle->delete();
 
         return redirect()->route('billing-cycles.index')

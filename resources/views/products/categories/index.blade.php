@@ -24,7 +24,9 @@
                     <div class="card shadow-sm">
                         <div class="card-header d-flex justify-content-between align-items-center">
                             <h4 class="card-title">Product Categories</h4>
-                            <a href="{{ route('products.categories.create') }}" class="btn btn-primary">Add New Category</a>
+                            @can(\App\Enum\Permissions::ProductCategoryCreate)
+                                <a href="{{ route('products.categories.create') }}" class="btn btn-primary">Add New Category</a>
+                            @endcan
                         </div>
                         <div class="card-body">
                             <table class="table table-bordered">
@@ -33,7 +35,10 @@
                                         <th>#</th>
                                         <th>Category Name</th>
                                         <th>Created At</th>
-                                        <th>Actions</th>
+                                        @canany([\App\Enum\Permissions::ProductCategoryEdit,
+                                            \App\Enum\Permissions::ProductCategoryDelete])
+                                            <th>Actions</th>
+                                        @endcanany
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -42,17 +47,24 @@
                                             <td>{{ $index + 1 }}</td>
                                             <td>{{ $category->name }}</td>
                                             <td>{{ $category->created_at->format('d M Y') }}</td>
-                                            <td>
-                                                <a href="{{ route('products.categories.edit', $category) }}"
-                                                    class="btn btn-sm btn-warning">Edit</a>
-                                                <form action="{{ route('products.categories.destroy', $category) }}"
-                                                    method="POST" class="d-inline"
-                                                    onsubmit="return confirm('Are you sure?');">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button class="btn btn-sm btn-danger">Delete</button>
-                                                </form>
-                                            </td>
+                                            @canany([\App\Enum\Permissions::ProductCategoryEdit,
+                                                \App\Enum\Permissions::ProductCategoryDelete])
+                                                <td>
+                                                    @can(\App\Enum\Permissions::ProductCategoryEdit)
+                                                        <a href="{{ route('products.categories.edit', $category) }}"
+                                                            class="btn btn-sm btn-warning">Edit</a>
+                                                    @endcan
+                                                    @can(\App\Enum\Permissions::ProductCategoryDelete)
+                                                        <form action="{{ route('products.categories.destroy', $category) }}"
+                                                            method="POST" class="d-inline"
+                                                            onsubmit="return confirm('Are you sure?');">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button class="btn btn-sm btn-danger">Delete</button>
+                                                        </form>
+                                                    @endcan
+                                                </td>
+                                            @endcanany
                                         </tr>
                                     @empty
                                         <tr>

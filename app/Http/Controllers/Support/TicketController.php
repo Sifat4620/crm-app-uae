@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Support;
 
-use App\Http\Controllers\Controller;
+use App\Enum\Permissions;
 use Illuminate\Http\Request;
-use Coderflex\LaravelTicket\Models\Ticket;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Coderflex\LaravelTicket\Models\Ticket;
 
 class TicketController extends Controller
 {
@@ -14,6 +15,10 @@ class TicketController extends Controller
      */
     public function index()
     {
+        if (!Auth::user()->can(Permissions::TicketShow)) {
+            abort(403);
+        }
+
         $tickets = Ticket::where('user_id', Auth::id())->latest()->paginate(10);
         return view('support.index', compact('tickets'));
     }
@@ -23,6 +28,10 @@ class TicketController extends Controller
      */
     public function create()
     {
+        if (!Auth::user()->can(Permissions::TicketCreate)) {
+            abort(403);
+        }
+
         return view('support.create');
     }
 
@@ -31,6 +40,10 @@ class TicketController extends Controller
      */
     public function store(Request $request)
     {
+        if (!Auth::user()->can(Permissions::TicketCreate)) {
+            abort(403);
+        }
+
         $request->validate([
             'title' => 'required|string|max:255',
             'message' => 'nullable|string',
@@ -38,11 +51,11 @@ class TicketController extends Controller
         ]);
 
         Ticket::create([
-            'title'    => $request->title,
-            'message'  => $request->message,
+            'title' => $request->title,
+            'message' => $request->message,
             'priority' => $request->priority,
-            'user_id'  => Auth::id(),
-            'status'   => 'open', // default
+            'user_id' => Auth::id(),
+            'status' => 'open', // default
         ]);
 
         return redirect()->route('tickets.index')->with('success', 'Ticket created successfully.');
@@ -53,6 +66,10 @@ class TicketController extends Controller
      */
     public function show($id)
     {
+        if (!Auth::user()->can(Permissions::TicketShow)) {
+            abort(403);
+        }
+
         $ticket = Ticket::where('id', $id)->where('user_id', Auth::id())->firstOrFail();
         return view('support.show', compact('ticket'));
     }

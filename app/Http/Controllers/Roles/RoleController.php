@@ -18,6 +18,10 @@ class RoleController extends Controller
      */
     public function index()
     {
+        if (!Auth::user()->can(Permissions::RoleShow)) {
+            abort(403);
+        }
+
         $roles = Role::where('name', '!=', Super::Admin)->get();
         return view('roles.index', compact(['roles']));
     }
@@ -27,6 +31,10 @@ class RoleController extends Controller
      */
     public function create()
     {
+        if (!Auth::user()->can(Permissions::RoleCreate)) {
+            abort(403);
+        }
+
         return view('roles.create');
     }
 
@@ -35,6 +43,10 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
+        if (!Auth::user()->can(Permissions::RoleCreate)) {
+            abort(403);
+        }
+
         $request->validate([
             'name' => ['required', 'string', 'min:3', 'max:50', 'unique:roles,name'],
         ]);
@@ -59,6 +71,9 @@ class RoleController extends Controller
      */
     public function edit(Role $role)
     {
+        if (!Auth::user()->can(Permissions::RoleEdit)) {
+            abort(403);
+        }
 
         if ($role->name == Super::Admin->value) {
             abort(404);
@@ -73,6 +88,10 @@ class RoleController extends Controller
      */
     public function update(Request $request, Role $role)
     {
+        if (!Auth::user()->can(Permissions::RoleEdit)) {
+            abort(403);
+        }
+
         if ($role->name == Super::Admin->value) {
             return redirect()->route('roles.index')->with('error', 'You can not update this role');
         }
@@ -92,6 +111,10 @@ class RoleController extends Controller
      */
     public function destroy(Role $role)
     {
+        if (!Auth::user()->can(Permissions::RoleDelete)) {
+            abort(403);
+        }
+
         if ($role->name == Super::Admin->value) {
             return redirect()->route('roles.index')->with('error', 'You can not delete this role');
         }
@@ -108,9 +131,9 @@ class RoleController extends Controller
      */
     public function assign_role_to_user(Request $request, User $user)
     {
-        // if (!Auth::user()->can(Permissions::USER_ROLE)) {
-        //     abort(403);
-        // }
+        if (!Auth::user()->can(Permissions::RoleEdit)) {
+            abort(403);
+        }
 
         if ($user->hasRole(Super::Admin) && !Auth::user()->hasRole(Super::Admin)) {
             abort(401);
@@ -139,9 +162,9 @@ class RoleController extends Controller
      */
     public function sync_permissions_to_role(Request $request, Role $role)
     {
-        // if (!Auth::user()->can(Permissions::ROLE_PERMISSION)) {
-        //     abort(403);
-        // }
+        if (!Auth::user()->can(Permissions::RoleEdit)) {
+            abort(403);
+        }
 
         $request->validate([
             'permissions' => 'array',
