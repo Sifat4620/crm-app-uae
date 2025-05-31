@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers\Clients;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Models\User;
 use App\Models\Client;
 use App\Models\OrderStatus;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules\Password;
 
 class UserController extends Controller
 {
@@ -35,7 +38,7 @@ class UserController extends Controller
 
         $clientId = $request->input('client');
 
-        if (!$clientId || !\App\Models\Client::find($clientId)) {
+        if (!$clientId || !Client::find($clientId)) {
             return redirect()->back()->withErrors(['Client not found']);
         }
 
@@ -44,16 +47,51 @@ class UserController extends Controller
         return redirect()->back()->with('success', "Orders status updated to '{$status}' for client ID {$clientId}.");
     }
 
+    /**
+     * Display the client create form
+     * @return \Illuminate\Contracts\View\View
+     */
+    public function create()
+    {
+        // Show client registration form
+        return view('client.create');
+    }
 
+    /**
+     * Store the newly create client data to database
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function store(Request $request)
+    {
+        $request->validate([
+            'name'            => ['required', 'string', 'max:255'],
+            'national_id'     => ['required', 'numeric'],
+            'business_number' => ['required', 'numeric'],
+            'country'         => ['required', 'string', 'max:100'],
+            'email'           => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
+            'password'        => ['required', 'confirmed', Password::defaults()],
+        ]);
 
+        $user = User::create([
+            'name'     => $request->name,
+            'email'    => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
 
+        $client                  = new Client();
+        $client->user_id         = $user->id;
+        $client->national_id     = $request->national_id;
+        $client->business_number = $request->business_number;
+        $client->country         = $request->country;
+        $client->gender          = $request->gender;
+        $client->state           = $request->state;
+        $client->city            = $request->city;
+        $client->zip             = $request->zip;
+        $client->save();
 
-
-    // public function create()
-    // {
-    //     // Show client registration form
-    //     return view('client.create');
-    // }
+        return redirect()->route('users.index')->with('success', 'Client Created successfully');
+    }
 
 
     // public function settings()
