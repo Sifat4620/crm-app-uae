@@ -26,7 +26,9 @@
                     <div class="card shadow-sm mb-4">
                         <div class="card-header d-flex justify-content-between align-items-center">
                             <h4 class="card-title">Roles</h4>
-                            <a href="{{ route('roles.create') }}" class="btn btn-primary">Add New Role</a>
+                            @can(\App\Enum\Permissions::RoleCreate)
+                                <a href="{{ route('roles.create') }}" class="btn btn-primary">Add New Role</a>
+                            @endcan
                         </div>
                         <div class="card-body">
                             <table class="table table-bordered table-hover">
@@ -35,7 +37,9 @@
                                         <th>#</th>
                                         <th>Role Name</th>
                                         <th>Permissions</th>
-                                        <th>Actions</th>
+                                        @canany([\App\Enum\Permissions::RoleEdit, \App\Enum\Permissions::RoleDelete])
+                                            <th>Actions</th>
+                                        @endcanany
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -45,22 +49,29 @@
                                             <td>{{ $role->name }}</td>
                                             <td>
                                                 @foreach ($role->permissions as $permissions)
-                                                    <span class="btn btn-sm" style="background-color: #007bff; color: #fff;">
+                                                    <span class="btn btn-sm"
+                                                        style="background-color: #007bff; color: #fff;">
                                                         {{ $permissions->name }}
                                                     </span>
                                                 @endforeach
                                             </td>
-                                            <td>
-                                                <a href="{{ route('roles.edit', $role) }}"
-                                                    class="btn btn-warning btn-sm">Edit</a>
-                                                <form action="{{ route('roles.destroy', $role) }}" method="POST"
-                                                    class="d-inline"
-                                                    onsubmit="return confirm('Do you really want to delete this?')">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                                                </form>
-                                            </td>
+                                            @canany([\App\Enum\Permissions::RoleEdit, \App\Enum\Permissions::RoleDelete])
+                                                <td>
+                                                    @can(\App\Enum\Permissions::RoleEdit)
+                                                        <a href="{{ route('roles.edit', $role) }}"
+                                                            class="btn btn-warning btn-sm">Edit</a>
+                                                    @endcan
+                                                    @can(\App\Enum\Permissions::RoleDelete)
+                                                        <form action="{{ route('roles.destroy', $role) }}" method="POST"
+                                                            class="d-inline"
+                                                            onsubmit="return confirm('Do you really want to delete this?')">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                                        </form>
+                                                    @endcan
+                                                </td>
+                                            @endcanany
                                         </tr>
                                     @empty
                                         <tr>

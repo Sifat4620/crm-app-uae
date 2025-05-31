@@ -2,15 +2,20 @@
 
 namespace App\Http\Controllers\Products;
 
-use App\Http\Controllers\Controller;
+use App\Enum\Permissions;
 use Illuminate\Http\Request;
 use App\Models\ProductCategory;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class ProductCategoryController extends Controller
 {
     // Display list of categories
     public function index()
     {
+        if (!Auth::user()->can(Permissions::ProductCategoryShow)) {
+            abort(403);
+        }
         $categories = ProductCategory::all();
         return view('products.categories.index', compact('categories'));
     }
@@ -18,12 +23,18 @@ class ProductCategoryController extends Controller
     // Show form to create a new category
     public function create()
     {
+        if (!Auth::user()->can(Permissions::ProductCategoryCreate)) {
+            abort(403);
+        }
         return view('products.categories.create');
     }
 
     // Store a newly created category
     public function store(Request $request)
     {
+        if (!Auth::user()->can(Permissions::ProductCategoryCreate)) {
+            abort(403);
+        }
         $request->validate([
             'name' => 'required|unique:product_categories,name',
             'description' => 'nullable'
@@ -42,6 +53,9 @@ class ProductCategoryController extends Controller
     // Show form to edit an existing category
     public function edit($id)
     {
+        if (!Auth::user()->can(Permissions::ProductCategoryEdit)) {
+            abort(403);
+        }
         $category = ProductCategory::findOrFail($id);
         return view('products.categories.edit', compact('category'));
     }
@@ -49,6 +63,10 @@ class ProductCategoryController extends Controller
     // Update the category
     public function update(Request $request, $id)
     {
+        if (!Auth::user()->can(Permissions::ProductCategoryEdit)) {
+            abort(403);
+        }
+
         $category = ProductCategory::findOrFail($id);
 
         $request->validate([
@@ -64,6 +82,9 @@ class ProductCategoryController extends Controller
     // Delete a category
     public function destroy($id)
     {
+        if (!Auth::user()->can(Permissions::ProductCategoryDelete)) {
+            abort(403);
+        }
         ProductCategory::findOrFail($id)->delete();
         return redirect()->route('products.categories.index')->with('success', 'Category deleted.');
     }

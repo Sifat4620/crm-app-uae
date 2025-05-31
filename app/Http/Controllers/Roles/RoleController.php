@@ -18,6 +18,10 @@ class RoleController extends Controller
      */
     public function index()
     {
+        if (!Auth::user()->can(Permissions::RoleShow)) {
+            abort(403);
+        }
+
         $roles = Role::where('name', '!=', Super::Admin)->get();
         return view('roles.index', compact(['roles']));
     }
@@ -27,6 +31,10 @@ class RoleController extends Controller
      */
     public function create()
     {
+        if (!Auth::user()->can(Permissions::RoleCreate)) {
+            abort(403);
+        }
+
         return view('roles.create');
     }
 
@@ -35,6 +43,10 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
+        if (!Auth::user()->can(Permissions::RoleCreate)) {
+            abort(403);
+        }
+
         $request->validate([
             'name' => ['required', 'string', 'min:3', 'max:50', 'unique:roles,name'],
         ]);
@@ -59,6 +71,9 @@ class RoleController extends Controller
      */
     public function edit(Role $role)
     {
+        if (!Auth::user()->can(Permissions::RoleEdit)) {
+            abort(403);
+        }
 
         if ($role->name == Super::Admin->value) {
             abort(404);
@@ -73,6 +88,10 @@ class RoleController extends Controller
      */
     public function update(Request $request, Role $role)
     {
+        if (!Auth::user()->can(Permissions::RoleEdit)) {
+            abort(403);
+        }
+
         if ($role->name == Super::Admin->value) {
             return redirect()->route('roles.index')->with('error', 'You can not update this role');
         }
@@ -92,6 +111,10 @@ class RoleController extends Controller
      */
     public function destroy(Role $role)
     {
+        if (!Auth::user()->can(Permissions::RoleDelete)) {
+            abort(403);
+        }
+
         if ($role->name == Super::Admin->value) {
             return redirect()->route('roles.index')->with('error', 'You can not delete this role');
         }
@@ -108,15 +131,19 @@ class RoleController extends Controller
      */
     public function assign_role_to_user(Request $request, User $user)
     {
-        // if (!Auth::user()->can(Permissions::USER_ROLE)) {
-        //     abort(403);
-        // }
+        if (!Auth::user()->can(Permissions::RoleEdit)) {
+            abort(403);
+        }
 
         if ($user->hasRole(Super::Admin) && !Auth::user()->hasRole(Super::Admin)) {
             abort(401);
         }
         if (Auth::user()->id == $user->id) {
             abort(404);
+        }
+        if ($request->role === null) {
+            $user->syncRoles([]);
+            return redirect()->route('roles.users')->with('success', 'Role dispatched successfully');
         }
 
         $request->validate([
@@ -128,7 +155,7 @@ class RoleController extends Controller
         $role = Role::find($request->role);
         $user->syncRoles($role->name);
 
-        return redirect()->back()->with('success', 'Role assigned successfully');
+        return redirect()->route('roles.admins')->with('success', 'Role assigned successfully');
     }
 
     /**
@@ -139,9 +166,9 @@ class RoleController extends Controller
      */
     public function sync_permissions_to_role(Request $request, Role $role)
     {
-        // if (!Auth::user()->can(Permissions::ROLE_PERMISSION)) {
-        //     abort(403);
-        // }
+        if (!Auth::user()->can(Permissions::RoleEdit)) {
+            abort(403);
+        }
 
         $request->validate([
             'permissions' => 'array',
@@ -151,5 +178,64 @@ class RoleController extends Controller
         $role->syncPermissions($request->permissions);
 
         return redirect()->back()->with('success', 'Permissions assigned successfully');
+    }
+
+    /**
+     * Detach all role from a user
+     * @param \App\Models\User $user
+     * @return mixed|\Illuminate\Http\RedirectResponse
+     */
+    public function remove_all_role_from_user(User $user)
+    {
+
+        // Only super admin can detach role to another super admin
+        if ($user->hasRole(Super::Admin) && !Auth::user()->hasRole(Super::Admin)) {
+            abort(401);
+        }
+
+        // Own role can not be detached
+        if (Auth::user()->id == $user->id) {
+            abort(404);
+        }
+
+        // Detach all roles from the user.
+        $user->syncRoles([]);
+
+        return redirect()->back()->with('success', 'All roles detached from ' . $user->name);
+    }
+
+    /**
+     * Get all admins
+     * @return \Illuminate\Contracts\View\View
+     */
+    public function admins()
+    {
+        $title = 'Admin';
+        $users = User::whereHas('roles')->get();
+
+        return view('roles.users', compact(['users', 'title']));
+    }
+
+    /**
+     * Get all users
+     * @return \Illuminate\Contracts\View\View
+     */
+    public function users()
+    {
+        $title = 'Users';
+        $users = User::doesntHave('roles')->get();
+
+        return view('roles.users', compact(['users', 'title']));
+    }
+
+    /**
+     * Assign role to user form
+     * @param \App\Models\User $user
+     * @return \Illuminate\Contracts\View\View
+     */
+    public function edit_user(User $user)
+    {
+        $roles = Role::where('name', '!=', Super::Admin)->orderBy('name')->get();
+        return view('roles.users_edit', compact(['user', 'roles']));
     }
 }

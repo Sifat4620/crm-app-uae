@@ -30,8 +30,12 @@
                 <ul aria-expanded="false">
                     <li><a href="{{ route('products.index') }}">Products</a></li>
                     <li><a href="{{ route('products.create') }}">Add Product</a></li>
-                    <li><a href="{{ route('products.categories.index') }}">Product Categories</a></li>
-                    <li><a href="{{ route('billing-cycles.index') }}">Billing Cycle</a></li>
+                    @can(\App\Enum\Permissions::ProductCategoryShow)
+                        <li><a href="{{ route('products.categories.index') }}">Product Categories</a></li>
+                    @endcan
+                    @can(\App\Enum\Permissions::BillingCycleShow)
+                        <li><a href="{{ route('billing-cycles.index') }}">Billing Cycle</a></li>
+                    @endcan
                     {{-- <li><a href="{{ route('orders.index') }}">Orders</a></li> --}}
                 </ul>
             </li>
@@ -89,26 +93,38 @@
             </li>
 
 
+            @can(\App\Enum\Permissions::RoleShow)
+                <!-- Role & Permission Section -->
+                <li class="has-arrow">
+                    <a href="#" aria-expanded="false">
+                        <i class="mdi mdi-key"></i>
+                        <span class="nav-text">Role</span>
+                    </a>
+                    <ul aria-expanded="false">
+                        <li><a href="{{ route('roles.index') }}">Role</a></li>
+                        <li><a href="{{ route('roles.admins') }}">Admins</a></li>
+                        <li><a href="{{ route('roles.users') }}">Users</a></li>
+                    </ul>
+                </li>
+            @endcan
 
-            <!-- Role & Permission Section -->
-            <li class="has-arrow">
-                <a href="{{ route('roles.index') }}" aria-expanded="false">
-                    <i class="mdi mdi-key"></i>
-                    <span class="nav-text">Role</span>
-                </a>
-            </li>
-
-            <!-- Support & Ticket System Section -->
-            <li class="has-arrow">
-                <a href="#" aria-expanded="false">
-                    <i class="mdi mdi-help-circle"></i>
-                    <span class="nav-text">Support</span>
-                </a>
-                <ul aria-expanded="false">
-                    <li><a href="{{ route('tickets.index') }}">Support Tickets</a></li>
-                    <li><a href="{{ route('tickets.create') }}">Raise Ticket</a></li>
-                </ul>
-            </li>
+            @canany([\App\Enum\Permissions::TicketShow, \App\Enum\Permissions::TicketCreate])
+                <!-- Support & Ticket System Section -->
+                <li class="has-arrow">
+                    <a href="#" aria-expanded="false">
+                        <i class="mdi mdi-help-circle"></i>
+                        <span class="nav-text">Support</span>
+                    </a>
+                    <ul aria-expanded="false">
+                        @can(\App\Enum\Permissions::TicketShow)
+                            <li><a href="{{ route('tickets.index') }}">Support Tickets</a></li>
+                        @endcan
+                        @can(\App\Enum\Permissions::TicketCreate)
+                            <li><a href="{{ route('tickets.create') }}">Raise Ticket</a></li>
+                        @endcan
+                    </ul>
+                </li>
+            @endcanany
 
             <!-- Financial Reports Section -->
             {{-- <li><a href="{{ route('reports.index') }}">
@@ -124,11 +140,11 @@
                 </a></li>
             @endrole --}}
 
-             <!-- Backup Section This also for admin -->
+            <!-- Backup Section This also for admin -->
             <li><a href="{{ route('backup.index') }}">
-                <i class="mdi mdi-chart-line"></i>
-                <span class="nav-text">Backup</span>
-            </a></li>
+                    <i class="mdi mdi-chart-line"></i>
+                    <span class="nav-text">Backup</span>
+                </a></li>
 
         </ul>
     </div>

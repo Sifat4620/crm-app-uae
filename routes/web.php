@@ -38,7 +38,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // =====================
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
     Route::get('/users/register', [UserController::class, 'create'])->name('user.register');
-    Route::post('/users/register', [UserController::class, 'store'])->name('user.store'); 
+    Route::post('/users/register', [UserController::class, 'store'])->name('user.store');
     Route::get('/user/settings', [UserController::class, 'settings'])->name('user.settings');
 
 
@@ -78,7 +78,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/client/{clientId}/products', 'clientProducts')->name('client-products');
 
         // Product Stock & Order Processing Time
-        Route::get('/product/{productId}/check-stock',  'checkStock')->name('check-stock');
+        Route::get('/product/{productId}/check-stock', 'checkStock')->name('check-stock');
 
         // // Billing Cycle Options
         // Route::get('/billing-options', [OrderController::class, 'billingOptions'])->name('billing-options');
@@ -87,72 +87,72 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Client Order Status Change Route
     Route::prefix('orders')->name('orders.')->controller(UserController::class)->group(function () {
-      Route::get('/status/{status}', 'status')->name('status');
+        Route::get('/status/{status}', 'status')->name('status');
     });
 
     // Billing Cycle Routes
     Route::resource('billing-cycles', BillingCycleController::class);
 
-    
-
-        // =====================
-        // Invoice & Payment System Routes
-        // =====================
-
-        Route::prefix('invoices')->group(function () {
-            Route::get('/', [InvoiceController::class, 'index'])->name('invoice.index');
-            Route::get('/create', [InvoiceController::class, 'create'])->name('invoice.create');
-            Route::post('/', [InvoiceController::class, 'store'])->name('invoices.store');
-            Route::get('/{invoice}', [InvoiceController::class, 'show'])->name('invoice.show');
-            Route::get('/{invoice}/edit', [InvoiceController::class, 'edit'])->name('invoice.edit');
-            Route::put('/{invoice}', [InvoiceController::class, 'update'])->name('invoice.update');
-            Route::delete('/{invoice}', [InvoiceController::class, 'destroy'])->name('invoice.destroy');
-            Route::get('/{invoice}/download', [InvoiceController::class, 'download'])->name('invoices.download');
-            Route::get('/status/{status}', [InvoiceController::class, 'filterByStatus'])->name('invoice.filterByStatus');
-        });
 
 
+    // =====================
+    // Invoice & Payment System Routes
+    // =====================
 
-        // Payment Routes
-        Route::prefix('payments')->group(function () {
-            Route::get('/', [PaymentController::class, 'index'])->name('payments.index');
-            Route::get('/create', [PaymentController::class, 'create'])->name('payments.create');
-            Route::post('/', [PaymentController::class, 'store'])->name('payments.store');
-            // Put report BEFORE {payment} route
-            Route::get('/report', [PaymentController::class, 'generateReport'])->name('payments.report');
+    Route::prefix('invoices')->group(function () {
+        Route::get('/', [InvoiceController::class, 'index'])->name('invoice.index');
+        Route::get('/create', [InvoiceController::class, 'create'])->name('invoice.create');
+        Route::post('/', [InvoiceController::class, 'store'])->name('invoices.store');
+        Route::get('/{invoice}', [InvoiceController::class, 'show'])->name('invoice.show');
+        Route::get('/{invoice}/edit', [InvoiceController::class, 'edit'])->name('invoice.edit');
+        Route::put('/{invoice}', [InvoiceController::class, 'update'])->name('invoice.update');
+        Route::delete('/{invoice}', [InvoiceController::class, 'destroy'])->name('invoice.destroy');
+        Route::get('/{invoice}/download', [InvoiceController::class, 'download'])->name('invoices.download');
+        Route::get('/status/{status}', [InvoiceController::class, 'filterByStatus'])->name('invoice.filterByStatus');
+    });
 
-            // Keep this last to avoid conflicts
-            Route::get('/{payment}', [PaymentController::class, 'show'])->name('payments.show');
-        });
 
 
-        // // Payment Gateways routes
-        // Route::prefix('payment-gateways')->name('payment-gateways.')->group(function () {
-        //     Route::get('/', [PaymentGatewayController::class, 'index'])->name('index');
-        //     Route::get('/create', [PaymentGatewayController::class, 'create'])->name('create');
-        //     Route::post('/', [PaymentGatewayController::class, 'store'])->name('store');
-        //     Route::get('/{gateway}/edit', [PaymentGatewayController::class, 'edit'])->name('edit');
-        //     Route::put('/{gateway}', [PaymentGatewayController::class, 'update'])->name('update');
-        //     Route::delete('/{gateway}', [PaymentGatewayController::class, 'destroy'])->name('destroy');
-        // });
+    // Payment Routes
+    Route::prefix('payments')->group(function () {
+        Route::get('/', [PaymentController::class, 'index'])->name('payments.index');
+        Route::get('/create', [PaymentController::class, 'create'])->name('payments.create');
+        Route::post('/', [PaymentController::class, 'store'])->name('payments.store');
+        // Put report BEFORE {payment} route
+        Route::get('/report', [PaymentController::class, 'generateReport'])->name('payments.report');
 
-        // // Payment Accounts routes
-        // Route::prefix('payment-accounts')->name('payment-accounts.')->group(function () {
-        //     Route::get('/', [PaymentAccountController::class, 'index'])->name('index');
-        //     Route::get('/create', [PaymentAccountController::class, 'create'])->name('create');
-        //     Route::post('/', [PaymentAccountController::class, 'store'])->name('store');
-        //     Route::get('/{account}/edit', [PaymentAccountController::class, 'edit'])->name('edit');
-        //     Route::put('/{account}', [PaymentAccountController::class, 'update'])->name('update');
-        //     Route::delete('/{account}', [PaymentAccountController::class, 'destroy'])->name('destroy');
-        // });
+        // Keep this last to avoid conflicts
+        Route::get('/{payment}', [PaymentController::class, 'show'])->name('payments.show');
+    });
 
-        // // Cash Transactions routes
-        Route::prefix('cash-transactions')->name('cash-transactions.')->group(function () {
-                Route::get('/', [CashTransactionController::class, 'index'])->name('index');
-                Route::get('/report', [CashTransactionController::class, 'report'])->name('report');
-                Route::get('/create', [CashTransactionController::class, 'create'])->name('create');
-                Route::post('/', [CashTransactionController::class, 'store'])->name('store');
-        });
+
+    // // Payment Gateways routes
+    // Route::prefix('payment-gateways')->name('payment-gateways.')->group(function () {
+    //     Route::get('/', [PaymentGatewayController::class, 'index'])->name('index');
+    //     Route::get('/create', [PaymentGatewayController::class, 'create'])->name('create');
+    //     Route::post('/', [PaymentGatewayController::class, 'store'])->name('store');
+    //     Route::get('/{gateway}/edit', [PaymentGatewayController::class, 'edit'])->name('edit');
+    //     Route::put('/{gateway}', [PaymentGatewayController::class, 'update'])->name('update');
+    //     Route::delete('/{gateway}', [PaymentGatewayController::class, 'destroy'])->name('destroy');
+    // });
+
+    // // Payment Accounts routes
+    // Route::prefix('payment-accounts')->name('payment-accounts.')->group(function () {
+    //     Route::get('/', [PaymentAccountController::class, 'index'])->name('index');
+    //     Route::get('/create', [PaymentAccountController::class, 'create'])->name('create');
+    //     Route::post('/', [PaymentAccountController::class, 'store'])->name('store');
+    //     Route::get('/{account}/edit', [PaymentAccountController::class, 'edit'])->name('edit');
+    //     Route::put('/{account}', [PaymentAccountController::class, 'update'])->name('update');
+    //     Route::delete('/{account}', [PaymentAccountController::class, 'destroy'])->name('destroy');
+    // });
+
+    // // Cash Transactions routes
+    Route::prefix('cash-transactions')->name('cash-transactions.')->group(function () {
+        Route::get('/', [CashTransactionController::class, 'index'])->name('index');
+        Route::get('/report', [CashTransactionController::class, 'report'])->name('report');
+        Route::get('/create', [CashTransactionController::class, 'create'])->name('create');
+        Route::post('/', [CashTransactionController::class, 'store'])->name('store');
+    });
 
 
 
@@ -167,7 +167,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/tickets/{id}', [TicketController::class, 'show'])->name('tickets.show');
 
 
-    
+
     // // =====================
     // // Financial Reports & Expenses
     // // =====================
@@ -197,9 +197,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // });
 
     // Roles route
-    Route::resource('roles', RoleController::class);
-    Route::patch('assign_role_to_user/{user}', [RoleController::class, 'assign_role_to_user'])->name('assign_role_to_user');
-    Route::patch('sync_permissions_to_role/{role}', [RoleController::class, 'sync_permissions_to_role'])->name('sync_permissions_to_role');
+    Route::resource('roles', RoleController::class)->except(['show']);
+    Route::prefix('/roles')->controller(RoleController::class)->name('roles.')->group(function () {
+        Route::get('users', 'users')->name('users');
+        Route::get('admins', 'admins')->name('admins');
+        Route::get('/user/{user}/edit', 'edit_user')->name('user.edit');
+        // Route::patch('/user/{user}', 'update_user')->name('user.update');
+        Route::patch('assign_role_to_user/{user}', 'assign_role_to_user')->name('assign_role_to_user');
+        Route::patch('sync_permissions_to_role/{role}', 'sync_permissions_to_role')->name('sync_permissions_to_role');
+    });
 
 });
 
