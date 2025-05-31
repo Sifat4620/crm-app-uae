@@ -96,10 +96,15 @@
             @can(\App\Enum\Permissions::RoleShow)
                 <!-- Role & Permission Section -->
                 <li class="has-arrow">
-                    <a href="{{ route('roles.index') }}" aria-expanded="false">
+                    <a href="#" aria-expanded="false">
                         <i class="mdi mdi-key"></i>
                         <span class="nav-text">Role</span>
                     </a>
+                    <ul aria-expanded="false">
+                        <li><a href="{{ route('roles.index') }}">Role</a></li>
+                        <li><a href="{{ route('roles.admins') }}">Admins</a></li>
+                        <li><a href="{{ route('roles.users') }}">Users</a></li>
+                    </ul>
                 </li>
             @endcan
 

@@ -141,6 +141,10 @@ class RoleController extends Controller
         if (Auth::user()->id == $user->id) {
             abort(404);
         }
+        if ($request->role === null) {
+            $user->syncRoles([]);
+            return redirect()->route('roles.users')->with('success', 'Role dispatched successfully');
+        }
 
         $request->validate([
             'role' => 'exists:roles,id'
@@ -151,7 +155,7 @@ class RoleController extends Controller
         $role = Role::find($request->role);
         $user->syncRoles($role->name);
 
-        return redirect()->back()->with('success', 'Role assigned successfully');
+        return redirect()->route('roles.admins')->with('success', 'Role assigned successfully');
     }
 
     /**
@@ -174,5 +178,64 @@ class RoleController extends Controller
         $role->syncPermissions($request->permissions);
 
         return redirect()->back()->with('success', 'Permissions assigned successfully');
+    }
+
+    /**
+     * Detach all role from a user
+     * @param \App\Models\User $user
+     * @return mixed|\Illuminate\Http\RedirectResponse
+     */
+    public function remove_all_role_from_user(User $user)
+    {
+
+        // Only super admin can detach role to another super admin
+        if ($user->hasRole(Super::Admin) && !Auth::user()->hasRole(Super::Admin)) {
+            abort(401);
+        }
+
+        // Own role can not be detached
+        if (Auth::user()->id == $user->id) {
+            abort(404);
+        }
+
+        // Detach all roles from the user.
+        $user->syncRoles([]);
+
+        return redirect()->back()->with('success', 'All roles detached from ' . $user->name);
+    }
+
+    /**
+     * Get all admins
+     * @return \Illuminate\Contracts\View\View
+     */
+    public function admins()
+    {
+        $title = 'Admin';
+        $users = User::whereHas('roles')->get();
+
+        return view('roles.users', compact(['users', 'title']));
+    }
+
+    /**
+     * Get all users
+     * @return \Illuminate\Contracts\View\View
+     */
+    public function users()
+    {
+        $title = 'Users';
+        $users = User::doesntHave('roles')->get();
+
+        return view('roles.users', compact(['users', 'title']));
+    }
+
+    /**
+     * Assign role to user form
+     * @param \App\Models\User $user
+     * @return \Illuminate\Contracts\View\View
+     */
+    public function edit_user(User $user)
+    {
+        $roles = Role::where('name', '!=', Super::Admin)->orderBy('name')->get();
+        return view('roles.users_edit', compact(['user', 'roles']));
     }
 }
