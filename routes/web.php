@@ -15,14 +15,22 @@ use App\Http\Controllers\Clients\UserController;
 use App\Http\Controllers\Billing\PaymentGatewayController;
 use App\Http\Controllers\Billing\CashTransactionController;
 use App\Http\Controllers\Billing\PaymentAccountController;
+use App\Http\Controllers\Frontend\HostingController;
+use App\Http\Controllers\Frontend\HomeController;
+
+
+
+
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/hosting', [HostingController::class, 'index'])->name('hosting');
 
 Route::middleware(['auth', 'verified'])->group(function () {
 
     // =====================
     // Dashboard
     // =====================
-    Route::get('/', function () {
-        return view('Dashboard');
+    Route::get('/dashboard', function () {
+        return view('dashboard'); 
     })->name('dashboard');
 
     // =====================
@@ -207,7 +215,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::patch('sync_permissions_to_role/{role}', 'sync_permissions_to_role')->name('sync_permissions_to_role');
     });
 
+
+
+
+
+
+    // Frontend Routes
+    
+
 });
+
+
 
 // Authentication Routes
 require __DIR__ . '/auth.php';
