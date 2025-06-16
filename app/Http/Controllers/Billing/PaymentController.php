@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers\Billing;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\Payment; 
-use Illuminate\Support\Facades\Auth;
 use App\Models\Order;
 use App\Models\Product;
-use App\Models\PaymentAccount;
+use App\Models\Payment; 
+use App\Enum\Permissions;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
+use App\Models\PaymentAccount;
 use App\Models\CashTransaction;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 
 
@@ -122,6 +123,10 @@ class PaymentController extends Controller
     // Payment report (optional)
     public function generateReport()
     {
+        if (!Auth::user()->can(Permissions::PaymentReport)) {
+            abort(403);
+        }
+
         $payments = Payment::with('order', 'client')
             ->orderBy('created_at', 'desc')
             ->get();

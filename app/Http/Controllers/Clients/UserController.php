@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Clients;
 
 use App\Models\User;
 use App\Models\Client;
+use App\Enum\Permissions;
 use App\Models\OrderStatus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
 
@@ -15,6 +17,10 @@ class UserController extends Controller
 {
     public function index()
     {
+        if (!Auth::user()->can(Permissions::ClientShow)) {
+            abort(403);
+        }
+
         $clients = Client::has('orders')->with(['user', 'orders.product'])->paginate(10);
         $orderStatuses = OrderStatus::all();
 
@@ -53,6 +59,9 @@ class UserController extends Controller
      */
     public function create()
     {
+        if (!Auth::user()->can(Permissions::ClientCreate)) {
+            abort(403);
+        }
         // Show client registration form
         return view('client.create');
     }
@@ -64,6 +73,9 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        if (!Auth::user()->can(Permissions::ClientCreate)) {
+            abort(403);
+        }
         $request->validate([
             'name'            => ['required', 'string', 'max:255'],
             'national_id'     => ['required', 'numeric'],
