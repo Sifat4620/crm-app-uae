@@ -5,17 +5,22 @@ namespace App\Http\Controllers\Orders;
 use App\Models\Order;
 use App\Models\Client;
 use App\Models\Product;
+use App\Enum\Permissions;
 use App\Models\BillingCycle;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
     // Show all orders
     public function index()
     {
+        if (!Auth::user()->can(Permissions::OrderIndex)) {
+            abort(403);
+        }
+
         // Eager load client, product, and billing cycles
         $orders = Order::with(['client.user', 'product', 'billingCycles'])->get();
         return view('orders.index', compact('orders'));
@@ -24,15 +29,23 @@ class OrderController extends Controller
     // Show the form to create a new order
     public function create()
     {
-        $clients  = Client::all();                              
-        $products = Product::orderBy('name')->get();             
-        $billing  = BillingCycle::orderBy('cycle_name')->get();  
+        if (!Auth::user()->can(Permissions::OrderCreate)) {
+            abort(403);
+        }
+
+        $clients  = Client::all();
+        $products = Product::orderBy('name')->get();
+        $billing  = BillingCycle::orderBy('cycle_name')->get();
         return view('orders.create', compact(['clients', 'products', 'billing']));
     }
 
     // Store a newly created order
     public function store(Request $request)
     {
+        if (!Auth::user()->can(Permissions::OrderCreate)) {
+            abort(403);
+        }
+
         // Validate the incoming request
         $request->validate([
             'product'  => ['required', 'exists:products,id'],
@@ -41,7 +54,7 @@ class OrderController extends Controller
         ]);
 
         // Fetch the product price
-        $product    = Product::find($request->product);
+        $product = Product::find($request->product);
         $totalPrice = $product->price * $request->quantity;
 
         // Get client from authenticated user
@@ -52,19 +65,19 @@ class OrderController extends Controller
 
         // Create the order (without billing_cycle_id)
         $order = Order::create([
-            'client_id'   => $client->id,
-            'product_id'  => $product->id,
-            'quantity'    => $request->quantity,
-            'total_price' => $totalPrice,
-            'billing_cycle_id' => $request->billing, 
+            'client_id'        => $client->id,
+            'product_id'       => $product->id,
+            'quantity'         => $request->quantity,
+            'total_price'      => $totalPrice,
+            'billing_cycle_id' => $request->billing,
         ]);
 
         // Insert billing cycle relation into pivot table
         DB::table('order_billing_cycle')->insert([
-            'order_id'         => $order->id,
+            'order_id' => $order->id,
             'billing_cycle_id' => $request->billing,
-            'created_at'       => now(),
-            'updated_at'       => now(),
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
 
         return redirect()->route('orders.index')->with('success', 'Order created successfully.');
@@ -73,6 +86,10 @@ class OrderController extends Controller
     // Show the details of a specific order
     public function show($id)
     {
+        if (!Auth::user()->can(Permissions::OrderShow)) {
+            abort(403);
+        }
+
         // Eager load client, product, billing cycles
         $order = Order::with(['client.user', 'product', 'billingCycles'])->findOrFail($id);
         return view('orders.show', compact('order'));

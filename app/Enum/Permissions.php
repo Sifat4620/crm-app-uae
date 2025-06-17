@@ -26,4 +26,17 @@ enum Permissions: string
     case RoleCreate = 'role.create';
     case RoleEdit   = 'role.edit';
     case RoleDelete = 'role.delete';
+
+    case ClientShow = 'client.show';
+    case ClientCreate = 'client.create';
+
+    case OrderIndex = 'order.index';
+    case OrderCreate = 'order.create';
+    case OrderShow = 'order.show';
+
+    case PaymentReport = 'payment.report';
+
+    case CashTransactionIndex = 'cash-transaction.index';
+    case CashTransactionCreate = 'cash-transaction.create';
+    case CashTransactionReport = 'cash-transaction.report';
 }
