@@ -56,7 +56,7 @@
          <div class="container">
             <div class="row">
                <div class="col-md-12 text-center">
-                  <p>© {{ date('Y') }} All Rights Reserved. <a href="https://html.design/">Free HTML Templates</a></p>
+                  <p>© {{ date('Y') }} All Rights Reserved.@ Fahim Faisal Sifat</p>
                </div>
             </div>
          </div>
