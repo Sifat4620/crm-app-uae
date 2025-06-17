@@ -70,7 +70,7 @@
                             <h4 class="card-title">Permissions</h4>
                         </div>
                         <div class="card-body">
-                            <form action="{{ route('sync_permissions_to_role', $role) }}" method="POST">
+                            <form action="{{ route('roles.sync_permissions_to_role', $role) }}" method="POST">
                                 @csrf
                                 @method('patch')
                                 <div class="form-group">
