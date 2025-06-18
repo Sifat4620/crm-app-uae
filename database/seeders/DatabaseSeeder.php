@@ -3,16 +3,17 @@
 namespace Database\Seeders;
 
 use App\Enum\Super;
+use App\Models\User;
+use App\Models\Client;
 use App\Models\Company;
 use App\Models\Product;
-use App\Models\ProductCategory;
-use App\Models\User;
 use App\Enum\Permissions;
+use App\Models\ProductCategory;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\Hash; 
 use Database\Seeders\OrderStatusSeeder;
+use Spatie\Permission\Models\Permission;
 
 
 class DatabaseSeeder extends Seeder
@@ -34,6 +35,17 @@ class DatabaseSeeder extends Seeder
             'name' => 'Super Admin',
             'email' => 'admin@crm.com',
             'password' => Hash::make('12345678'), 
+        ]);
+        Client::create([
+            'user_id' => $user->id,
+        ]);
+
+        $user2 = User::factory()->create([
+            'name' => 'Test User',
+            'email' => 'test@crm.com'
+        ]);
+        Client::create([
+            'user_id' => $user2->id,
         ]);
 
         // Will create a Role named for Super Admin

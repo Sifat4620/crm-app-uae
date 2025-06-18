@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\Products;
 
 
-use App\Http\Controllers\Controller;
+use App\Models\Order;
 use App\Models\Product;
-use App\Models\ProductCategory;
-use Illuminate\Http\Request;
-use App\Models\Order; 
+use App\Enum\Permissions;
 use App\Models\BillingCycle;
+use Illuminate\Http\Request;
+use App\Models\ProductCategory;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 
 class ProductController extends Controller
@@ -19,16 +21,20 @@ class ProductController extends Controller
         $categories = ProductCategory::withCount('products')->get();
         $products = Product::all();
         $orders = Order::with('client', 'product')->get();
-        $billingCycles = BillingCycle::all(); 
+        $billingCycles = BillingCycle::all();
 
-   
+
         return view('products.index', compact('categories', 'products', 'orders', 'billingCycles'));
-        
+
     }
 
     // Show the form for creating a new product
     public function create()
     {
+        if (!Auth::user()->can(Permissions::ProductCreate)) {
+            abort(403);
+        }
+
         // Fetch all categories for the dropdown selection
         $categories = ProductCategory::all();
         return view('products.create', compact('categories'));
@@ -37,6 +43,10 @@ class ProductController extends Controller
     // Store a newly created product in the database
     public function store(Request $request)
     {
+        if (!Auth::user()->can(Permissions::ProductCreate)) {
+            abort(403);
+        }
+
         $request->validate([
             'product_name' => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -44,18 +54,18 @@ class ProductController extends Controller
             'category_id' => 'required|exists:product_categories,id',
             'stock_quantity' => 'required|integer',
         ]);
-    
+
         Product::create([
             'name' => $request->product_name,
             'description' => $request->description,
             'price' => $request->price,
             'category_id' => $request->category_id,
-            'stock_quantity' => $request->stock_quantity, 
+            'stock_quantity' => $request->stock_quantity,
         ]);
-    
+
         return redirect()->route('products.index')->with('success', 'Product created successfully.');
     }
-    
+
 
     // Display the specified product
     public function show($id)
@@ -68,6 +78,9 @@ class ProductController extends Controller
     // Show the form for editing the specified product
     public function edit($id)
     {
+        if (!Auth::user()->can(Permissions::ProductEdit)) {
+            abort(403);
+        }
         // Fetch the product and categories for editing
         $product = Product::findOrFail($id);
         $categories = ProductCategory::all();
@@ -77,6 +90,9 @@ class ProductController extends Controller
     // Update the specified product in the database
     public function update(Request $request, $id)
     {
+        if (!Auth::user()->can(Permissions::ProductEdit)) {
+            abort(403);
+        }
         // Validate the incoming request
         $request->validate([
             'name' => 'required|string|max:255',
@@ -102,6 +118,10 @@ class ProductController extends Controller
     // Remove the specified product from the database
     public function destroy($id)
     {
+        if (!Auth::user()->can(Permissions::ProductDelete)) {
+            abort(403);
+        }
+
         // Find the product and delete it
         $product = Product::findOrFail($id);
         $product->delete();

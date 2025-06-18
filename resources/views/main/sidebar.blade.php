@@ -8,46 +8,57 @@
                 </a></li>
 
 
-            <!-- Client Management Section -->
-            <li class="has-arrow">
-                <a href="#" aria-expanded="false">
-                    <i class="mdi mdi-account-circle"></i>
-                    <span class="nav-text">Clients</span>
-                </a>
-                <ul aria-expanded="false">
-                    <li><a href="{{ route('users.index') }}">All Clients</a></li>
-                    {{-- <li><a href="{{ route('user.register') }}">Add Client</a></li> --}}
+            @can(\App\Enum\Permissions::ClientShow)
+                <!-- Client Management Section -->
+                <li class="has-arrow">
+                    <a href="#" aria-expanded="false">
+                        <i class="mdi mdi-account-circle"></i>
+                        <span class="nav-text">Clients</span>
+                    </a>
+                    <ul aria-expanded="false">
+                        <li><a href="{{ route('users.index') }}">All Clients</a></li>
+                        {{-- <li><a href="{{ route('user.register') }}">Add Client</a></li> --}}
 
-                </ul>
-            </li>
+                    </ul>
+                </li>
+            @endcan
 
-            <!-- Product Management Section -->
-            <li class="has-arrow">
-                <a href="#" aria-expanded="false">
-                    <i class="mdi mdi-cube"></i>
-                    <span class="nav-text">Products & Orders</span>
-                </a>
-                <ul aria-expanded="false">
-                    <li><a href="{{ route('products.index') }}">Products</a></li>
-                    <li><a href="{{ route('products.create') }}">Add Product</a></li>
-                    @can(\App\Enum\Permissions::ProductCategoryShow)
-                        <li><a href="{{ route('products.categories.index') }}">Product Categories</a></li>
-                    @endcan
-                    @can(\App\Enum\Permissions::BillingCycleShow)
-                        <li><a href="{{ route('billing-cycles.index') }}">Billing Cycle</a></li>
-                    @endcan
-                    {{-- <li><a href="{{ route('orders.index') }}">Orders</a></li> --}}
-                </ul>
-            </li>
+            @canany([\App\Enum\Permissions::ProductShow, \App\Enum\Permissions::ProductCategoryShow,
+                \App\Enum\Permissions::BillingCycleShow, \App\Enum\Permissions::ProductCreate])
+                <!-- Product Management Section -->
+                <li class="has-arrow">
+                    <a href="#" aria-expanded="false">
+                        <i class="mdi mdi-cube"></i>
+                        <span class="nav-text">Products & Orders</span>
+                    </a>
+                    <ul aria-expanded="false">
+                        @canany([\App\Enum\Permissions::ProductShow, \App\Enum\Permissions::ProductCategoryShow,
+                            \App\Enum\Permissions::BillingCycleShow])
+                            <li><a href="{{ route('products.index') }}">Products</a></li>
+                        @endcanany
+                        @can(\App\Enum\Permissions::ProductCreate)
+                            <li><a href="{{ route('products.create') }}">Add Product</a></li>
+                        @endcan
+                        @can(\App\Enum\Permissions::ProductCategoryShow)
+                            <li><a href="{{ route('products.categories.index') }}">Product Categories</a></li>
+                        @endcan
+                        @can(\App\Enum\Permissions::BillingCycleShow)
+                            <li><a href="{{ route('billing-cycles.index') }}">Billing Cycle</a></li>
+                        @endcan
+                        {{-- <li><a href="{{ route('orders.index') }}">Orders</a></li> --}}
+                    </ul>
+                </li>
+            @endcanany
 
-
-            <!-- Separate Orders Section -->
-            <li>
-                <a href="{{ route('orders.index') }}" aria-expanded="false">
-                    <i class="mdi mdi-cart"></i>
-                    <span class="nav-text">Orders</span>
-                </a>
-            </li>
+            @can(\App\Enum\Permissions::OrderIndex)
+                <!-- Separate Orders Section -->
+                <li>
+                    <a href="{{ route('orders.index') }}" aria-expanded="false">
+                        <i class="mdi mdi-cart"></i>
+                        <span class="nav-text">Orders</span>
+                    </a>
+                </li>
+            @endcan
 
             <!-- Invoice & Payment Management Section -->
             <li class="has-arrow">
@@ -80,15 +91,21 @@
                     {{-- Payments --}}
                     <li><a href="{{ route('payments.index') }}">Payments</a></li>
                     <li><a href="{{ route('payments.create') }}">Record Payment</a></li>
-                    <li><a href="{{ route('payments.report') }}">Payment Report</a></li>
+                    @can(\App\Enum\Permissions::PaymentReport)
+                        <li><a href="{{ route('payments.report') }}">Payment Report</a></li>
+                    @endcan
 
                     {{-- Manual Gateways & Accounts --}}
                     {{-- <li><a href="{{ route('payment-gateways.index') }}">Payment Gateways</a></li> --}}
                     {{-- <li><a href="{{ route('payment-accounts.index') }}">Payment Accounts</a></li> --}}
 
                     {{-- Cash Management --}}
-                    <li><a href="{{ route('cash-transactions.index') }}">Cash Transactions</a></li>
-                    <li><a href="{{ route('cash-transactions.report') }}">Cash Report</a></li>
+                    @can(\App\Enum\Permissions::CashTransactionIndex)
+                        <li><a href="{{ route('cash-transactions.index') }}">Cash Transactions</a></li>
+                    @endcan
+                    @can(\App\Enum\Permissions::CashTransactionReport)
+                        <li><a href="{{ route('cash-transactions.report') }}">Cash Report</a></li>
+                    @endcan
                 </ul>
             </li>
 
