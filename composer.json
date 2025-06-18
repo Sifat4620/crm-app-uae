@@ -10,6 +10,7 @@
         "backpack/backupmanager": "^5.0",
         "barryvdh/laravel-dompdf": "^3.1",
         "bavix/laravel-wallet": "^11.4",
+        "buzz/laravel-google-captcha": "^2.3",
         "coderflex/laravel-ticket": "^2.1",
         "laravel/cashier": "^15.6",
         "laravel/framework": "^12.0",

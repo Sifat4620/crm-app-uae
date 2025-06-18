@@ -19,7 +19,8 @@
     <div id="preloader">
         <div class="loader">
             <svg class="circular" viewBox="25 25 50 50">
-                <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="3" stroke-miterlimit="10"/>
+                <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="3"
+                    stroke-miterlimit="10" />
             </svg>
         </div>
     </div>
@@ -35,9 +36,9 @@
                                 <div class="logo text-center mt-4">
                                     <h4>CRM - Customer Relationship Management System</h4>
                                 </div>
-                                
+
                                 <!-- Login Form Heading -->
-                                <h4 class="text-center mt-3">Log into Your Account</h4>
+                                <h4 class="text-center mt-3">{{ __('Log into Your Account') }}</h4>
 
                                 <!-- Form Starts Here -->
                                 <form class="m-t-30 m-b-30" method="POST" action="{{ route('login') }}">
@@ -45,8 +46,10 @@
 
                                     <!-- Email Address Input -->
                                     <div class="form-group">
-                                        <label for="email">Email Address</label>
-                                        <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" name="email" placeholder="Email" value="{{ old('email') }}" required autofocus autocomplete="username">
+                                        <label for="email">{{ __('Email Address') }}</label>
+                                        <input type="email" class="form-control @error('email') is-invalid @enderror"
+                                            id="email" name="email" placeholder="Email"
+                                            value="{{ old('email') }}" required autofocus autocomplete="username">
                                         @error('email')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -57,7 +60,9 @@
                                     <!-- Password Input -->
                                     <div class="form-group">
                                         <label for="password">Password</label>
-                                        <input type="password" class="form-control @error('password') is-invalid @enderror" id="password" name="password" placeholder="Password" required>
+                                        <input type="password"
+                                            class="form-control @error('password') is-invalid @enderror" id="password"
+                                            name="password" placeholder="Password" required>
                                         @error('password')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -65,31 +70,44 @@
                                         @enderror
                                     </div>
 
+                                    {!! app('captcha')->display() !!}
+                                    <div class="form-group">
+                                        @error('g-recaptcha-response')
+                                            <p style="color: red;">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+
                                     <!-- Remember Me and Forgot Password -->
                                     <div class="form-row">
                                         <div class="form-group col-md-6">
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="remember" name="remember">
-                                                <label class="form-check-label" for="remember">Remember me</label>
+                                                <input class="form-check-input" type="checkbox" id="remember"
+                                                    name="remember">
+                                                <label class="form-check-label"
+                                                    for="remember">{{ __('Remember me') }}</label>
                                             </div>
                                         </div>
                                         <div class="form-group col-md-6 text-right">
                                             @if (Route::has('password.request'))
-                                                <a href="{{ route('password.request') }}" class="text-muted">Forgot Password?</a>
+                                                <a href="{{ route('password.request') }}"
+                                                    class="text-muted">{{ __('Forgot Password?') }}</a>
                                             @endif
                                         </div>
                                     </div>
 
                                     <!-- Submit Button -->
                                     <div class="text-center m-b-15 m-t-15">
-                                        <button type="submit" class="btn btn-primary btn-block">Sign in</button>
+                                        <button type="submit"
+                                            class="btn btn-primary btn-block">{{ __('Sign in') }}</button>
                                     </div>
                                 </form>
                                 <!-- Form Ends Here -->
 
                                 <!-- Alternative Login Options (Social Media or Others) -->
                                 <div class="text-center">
-                                    <p class="m-t-30">Don't have an account? <a href="{{ route('register') }}">Register Now</a></p>
+                                    <p class="m-t-30">{{ __("Don't have an account?") }} <a
+                                            href="{{ route('register') }}">{{ __('Register Now') }}</a>
+                                    </p>
                                 </div>
                             </div>
                         </div>
