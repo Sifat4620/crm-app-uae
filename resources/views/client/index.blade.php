@@ -28,6 +28,21 @@
                         <div class="card-body">
 
                             <div class="table-responsive">
+
+                                @php
+                                    // Define colors for statuses (Bootstrap badge colors)
+                                    $statusColors = [
+                                        'active' => 'success',    // green
+                                        'pending' => 'warning',   // yellow
+                                        'inactive' => 'secondary', // gray
+                                        'cancelled' => 'danger',  // red
+                                        // Add other statuses as needed
+                                    ];
+
+                                    // Get current selected status from query parameters
+                                    $currentStatus = request()->get('status');
+                                @endphp
+
                                 <table class="table table-bordered table-striped">
                                     <thead class="thead-light">
                                         <tr>
@@ -67,19 +82,31 @@
                                                 <td>{{ $totalQuantity }}</td>
                                                 <td>${{ number_format($totalSpending, 2) }}</td>
                                                 <td>{{ $productNames ?: '-' }}</td>
-                                                <td>{{ $statuses ?: '-' }}</td>
 
-                                                {{-- Action Dropdown --}}
+                                                {{-- Colored Status Badges --}}
                                                 <td>
-                                                    @foreach ($orderStatuses as $status)
-                                                        <a href="{{ route('orders.status', ['status' => $status->status_name, 'client' => $client->id]) }}"
-                                                            class="btn btn-sm btn-outline-primary me-1 mb-1">
-                                                            {{ $status->status_name }}
-                                                        </a>
+                                                    @foreach(explode(', ', $statuses) as $status)
+                                                        @php
+                                                            $color = $statusColors[strtolower($status)] ?? 'primary';
+                                                        @endphp
+                                                        <span class="badge bg-{{ $color }}">{{ ucfirst($status) }}</span>
                                                     @endforeach
                                                 </td>
 
-
+                                                {{-- Action Buttons with Highlight --}}
+                                                <td>
+                                                    @foreach ($orderStatuses as $status)
+                                                        @php
+                                                            $btnClass = (strtolower($currentStatus) == strtolower($status->status_name))
+                                                                ? 'btn btn-sm btn-primary me-1 mb-1'  // highlighted
+                                                                : 'btn btn-sm btn-outline-primary me-1 mb-1';  // default
+                                                        @endphp
+                                                        <a href="{{ route('orders.status', ['status' => $status->status_name, 'client' => $client->id]) }}"
+                                                            class="{{ $btnClass }}">
+                                                            {{ ucfirst($status->status_name) }}
+                                                        </a>
+                                                    @endforeach
+                                                </td>
                                             </tr>
                                         @empty
                                             <tr>
