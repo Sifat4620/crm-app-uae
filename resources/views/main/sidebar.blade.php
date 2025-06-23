@@ -79,7 +79,7 @@
                 <ul aria-expanded="false">
                     {{-- Payments --}}
                     <li><a href="{{ route('payments.index') }}">Payments</a></li>
-                    <li><a href="{{ route('payments.create') }}">Record Payment</a></li>
+                    {{-- <li><a href="{{ route('payments.create') }}">Record Payment</a></li> --}}
                     <li><a href="{{ route('payments.report') }}">Payment Report</a></li>
 
                     {{-- Manual Gateways & Accounts --}}
