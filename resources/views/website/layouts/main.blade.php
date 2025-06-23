@@ -4,16 +4,24 @@
    <meta charset="utf-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1">
+
    <title>@yield('title', '4uhost')</title>
-   <meta name="keywords" content="@yield('meta_keywords', '')">
-   <meta name="description" content="@yield('meta_description', '')">
-   <meta name="author" content="@yield('meta_author', '')">
-   <!-- CSS Files -->
+   <meta name="keywords" content="@yield('meta_keywords', 'web hosting, domain, 4uhost')">
+   <meta name="description" content="@yield('meta_description', 'Reliable hosting solutions by 4uhost')">
+   <meta name="author" content="@yield('meta_author', '4uhost Team')">
+
+   <!-- Favicon -->
+   <link rel="icon" href="{{ asset('frontend/images/fevicon.png') }}" type="image/png" />
+
+   <!-- Core CSS -->
    <link rel="stylesheet" href="{{ asset('frontend/css/bootstrap.min.css') }}">
    <link rel="stylesheet" href="{{ asset('frontend/css/style.css') }}">
    <link rel="stylesheet" href="{{ asset('frontend/css/responsive.css') }}">
-   <link rel="icon" href="{{ asset('frontend/images/fevicon.png') }}" type="image/gif" />
-   <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+
+   <!-- Font Awesome (CDN fallback recommended) -->
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha512-Sf3ZG/yyPS27cE7gP+mFyLqu82Z3DQF4QvZs9ASBBEex5xnZOVwVNTJHewh3Ay7e4bP58aR00/7++1j6wF0Tg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+   <!-- Page Specific Styles -->
    @stack('styles')
 </head>
 
@@ -22,7 +30,7 @@
    <!-- Loader -->
    <div class="loader_bg">
       <div class="loader">
-         <img src="{{ asset('images/loading.gif') }}" alt="Loading..."/>
+         <img src="{{ asset('frontend/images/loading.gif') }}" alt="Loading..." />
       </div>
    </div>
 
@@ -37,10 +45,13 @@
    <!-- Footer -->
    @include('website.partials.footer')
 
-   <!-- JS Files -->
+   <!-- Core JS -->
    <script src="{{ asset('frontend/js/jquery.min.js') }}"></script>
    <script src="{{ asset('frontend/js/bootstrap.bundle.min.js') }}"></script>
    <script src="{{ asset('frontend/js/custom.js') }}"></script>
+
+   <!-- Page Specific Scripts -->
    @stack('scripts')
+
 </body>
 </html>

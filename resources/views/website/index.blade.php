@@ -1,6 +1,6 @@
 @extends('website.layouts.main')
 
-@section('title', '4uhost - Home')
+@section('title', 'CRMS - Home')
 
 @section('content')
 
