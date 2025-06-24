@@ -33,6 +33,11 @@ class Order extends Model
         return $this->hasMany(Payment::class);
     }
 
+        public function billingCycle()
+    {
+        return $this->belongsTo(BillingCycle::class);
+    }
+
 
     
     

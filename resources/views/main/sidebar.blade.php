@@ -57,16 +57,18 @@
                 </a>
                 <ul aria-expanded="false">
                     {{-- Invoice Actions --}}
-                    {{-- <li><a href="{{ route('invoice.index') }}">Invoices</a></li>
-                    <li><a href="{{ route('invoice.create') }}">Create Invoice</a></li> --}}
-                    {{-- <li><a href="{{ route('invoices.download', $invoice->id) }}">Download Invoice PDF</a></li> --}}
+                    <li><a href="{{ route('invoice.index') }}">Invoices</a></li>
+                    <li><a href="{{ route('invoice.create') }}">Create Invoice</a></li>
+                    {{-- @isset($invoice)
+                            <li><a href="{{ route('invoice.download', $invoice->id) }}">Download Invoice PDF</a></li>
+                    @endisset --}}
 
                     {{-- Invoice Status Filters --}}
-                    {{-- <li><a href="{{ route('invoice.filterByStatus', 'paid') }}">Paid Invoices</a></li>
+                    <li><a href="{{ route('invoice.filterByStatus', 'paid') }}">Paid Invoices</a></li>
                     <li><a href="{{ route('invoice.filterByStatus', 'due') }}">Due Invoices</a></li>
                     <li><a href="{{ route('invoice.filterByStatus', 'overdue') }}">Overdue Invoices</a></li>
                     <li><a href="{{ route('invoice.filterByStatus', 'refunded') }}">Refunded Invoices</a></li>
-                    <li><a href="{{ route('invoice.filterByStatus', 'canceled') }}">Canceled Invoices</a></li> --}}
+                    <li><a href="{{ route('invoice.filterByStatus', 'canceled') }}">Canceled Invoices</a></li>
                 </ul>
             </li>
 

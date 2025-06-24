@@ -104,7 +104,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 
     // =====================
-    // Invoice & Payment System Routes
+    // Invoice Routes
     // =====================
 
     Route::prefix('invoices')->group(function () {

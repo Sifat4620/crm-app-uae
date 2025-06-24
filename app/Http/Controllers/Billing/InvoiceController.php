@@ -6,15 +6,21 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Invoice;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\Order;
 
 class InvoiceController extends Controller
 {
     // Display a listing of invoices
-    public function index()
+   public function index(Request $request)
     {
-        $invoices = Invoice::all(); 
-        return view('Invoice.index', compact('invoices')); 
+        $orders = Order::with(['client.user', 'product', 'billingCycle'])
+                    ->orderBy('created_at', 'desc')
+                    ->paginate(15);
+
+        return view('Invoice.index', ['invoices' => $orders]);
     }
+
+
 
     // Show the form for creating a new invoice
     public function create()
